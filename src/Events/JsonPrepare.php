@@ -15,7 +15,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class JsonPrepare
  * @package FastDog\Core\Events
- *
+ * @version 0.1.0
+ * @author Андрей Мартынов <d.g.dev482@gmail.com>
  */
 class JsonPrepare implements AdminPrepareEventInterface
 {

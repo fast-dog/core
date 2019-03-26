@@ -13,10 +13,10 @@ use Illuminate\Http\Request;
 
 /**
  * Class AdminController
+ *
  * @package FastDog\Core\Controllers
  * @version 0.1.0
  * @author Андрей Мартынов <d.g.dev482@gmail.com>
- *
  */
 class AdminController extends Controller
 {
@@ -33,7 +33,7 @@ class AdminController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('admin')->except(['getLogin', 'postLogin']);
+        $this->middleware('FastDog\Core\Http\Middleware\Admin')->except(['getLogin', 'postLogin']);
     }
 
     /**
