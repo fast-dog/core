@@ -19,17 +19,8 @@
     "fideloper/proxy": "^4.0",
     "laravel/framework": "5.8.*",
     "laravel/tinker": "^1.0",
-    "barryvdh/laravel-elfinder": "^0.3.8",
     "baum/baum": "~1.1",
-    "anhskohbo/no-captcha": "^2.1",
-    "artisaninweb/laravel-soap": "0.3.*",
-    "intervention/image": "2.*",
-    "intervention/imagecache": "2.*",
-    "ivanlemeshev/laravel5-cyrillic-slug": "1.0.0",
-    "mews/purifier": "~2.0",
     "predis/predis": "@dev",
-    "pusher/pusher-php-server": "^3.0",
-    "umisoft/phpmorphy": "1.0.1",
     "jenssegers/date": "^3.2"
   },
   "require-dev": {
