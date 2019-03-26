@@ -21,7 +21,9 @@
     "laravel/tinker": "^1.0",
     "baum/baum": "~1.1",
     "predis/predis": "@dev",
-    "jenssegers/date": "^3.2"
+    "jenssegers/date": "^3.2",
+    "spatie/db-dumper": "^2.13.2",
+    "chumper/zipper": "1.0.*"
   },
   "require-dev": {
     "sentry/sentry-laravel": "^0.6.1"
