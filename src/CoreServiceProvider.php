@@ -80,6 +80,8 @@ class  CoreServiceProvider extends LaravelServiceProvider
 
             return $manager;
         });
+
+        $this->app->register(CoreEventServiceProvider::class);
     }
 
     /**

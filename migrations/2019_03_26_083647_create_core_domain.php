@@ -28,15 +28,6 @@ class CreateCoreDomain extends Migration
                 $table->softDeletes();
             });
             DB::statement("ALTER TABLE `core_domain` comment 'Доступные домены'");
-
-//            Domain::firstOrCreate([
-//                Domain::NAME => trans('app.Главный сайт'),
-//                Domain::URL => \Request::url(),
-//                Domain::DATA => json_encode([]),
-//                Domain::SITE_ID => '001',
-//                Domain::CODE => '001',
-//                Domain::STATE => Domain::STATE_PUBLISHED,
-//            ]);
         }
     }
 

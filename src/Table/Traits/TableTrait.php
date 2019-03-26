@@ -8,14 +8,11 @@
 
 namespace FastDog\Core\Table\Traits;
 
-
-use FastDog\Core\BaseModel;
+use FastDog\Core\Models\BaseModel;
+use FastDog\Core\Models\DomainManager;
 use FastDog\Core\Table\BaseTable;
 use FastDog\Core\Table\Filters\BaseFilter;
 use FastDog\Core\Table\Interfaces\TableModelInterface;
-use FastDog\Modules\Config\Entity\DomainManager;
-use FastDog\Modules\Menu\Entity\Menu;
-use FastDog\Modules\Users\Entity\User;
 use Baum\Node;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -132,56 +129,53 @@ trait TableTrait
                     })
                     ->orderBy($this->order, $this->direction)
                     ->paginate(\Request::input('limit', $this->limit));
-                /**
-                 * @var $item BaseModel
-                 */
-                $items->each(function ($item) use ($cols, &$result, $selectField) {
-                    $data = [];
-                    if (isset($item->{BaseModel::STATE})) {
-                        $data[BaseModel::STATE] = $item->{BaseModel::STATE};
-                    }
-                    if (in_array(BaseModel::DATA, $selectField)) {
-                        $data[BaseModel::DATA] = (is_string($item->{BaseModel::DATA})) ? json_decode($item->{BaseModel::DATA}) : $item->{BaseModel::DATA};
-                    }
+                    $items->each(function (BaseModel $item) use ($cols, &$result, $selectField) {
+                        $data = [];
+                        if (isset($item->{BaseModel::STATE})) {
+                            $data[BaseModel::STATE] = $item->{BaseModel::STATE};
+                        }
+                        if (in_array(BaseModel::DATA, $selectField)) {
+                            $data[BaseModel::DATA] = (is_string($item->{BaseModel::DATA})) ? json_decode($item->{BaseModel::DATA}) : $item->{BaseModel::DATA};
+                        }
 
-                    $cols->each(function ($col) use ($item, &$data, &$relations) {
-                        $col = (array)$col;
-                        if (isset($col['related'])) {
-                            $related = explode(':', $col['related']);
-                            if (!isset($relations[$col['key']][$item->{$col['key']}])) {
-                                $relations[$col['key']][$item->{$col['key']}] = $item->{$related[0]};
-                            }
-                            if ($relations[$col['key']][$item->{$col['key']}]) {
-                                switch ($related[1]) {
-                                    case 'count()':
-                                        $data[$col['key']] = $relations[$col['key']][$item->{$col['key']}]->count();
-                                        break;
-                                    default:
-                                        $data[$col['key']] = $relations[$col['key']][$item->{$col['key']}]->{$related[1]};
-                                        break;
+                        $cols->each(function ($col) use ($item, &$data, &$relations) {
+                            $col = (array)$col;
+                            if (isset($col['related'])) {
+                                $related = explode(':', $col['related']);
+                                if (!isset($relations[$col['key']][$item->{$col['key']}])) {
+                                    $relations[$col['key']][$item->{$col['key']}] = $item->{$related[0]};
+                                }
+                                if ($relations[$col['key']][$item->{$col['key']}]) {
+                                    switch ($related[1]) {
+                                        case 'count()':
+                                            $data[$col['key']] = $relations[$col['key']][$item->{$col['key']}]->count();
+                                            break;
+                                        default:
+                                            $data[$col['key']] = $relations[$col['key']][$item->{$col['key']}]->{$related[1]};
+                                            break;
+                                    }
+                                }
+                            } else {
+                                if ($item->{$col['key']} instanceof Carbon) {
+                                    $data[$col['key']] = $item->{$col['key']}->format($this->getDateTimeFormat());
+                                } else {
+                                    $data[$col['key']] = $item->{$col['key']};
                                 }
                             }
-                        } else {
-                            if ($item->{$col['key']} instanceof Carbon) {
-                                $data[$col['key']] = $item->{$col['key']}->format($this->getDateTimeFormat());
-                            } else {
-                                $data[$col['key']] = $item->{$col['key']};
+                        });
+                        $data['checked'] = false;
+
+                        if (isset($item->{BaseModel::SITE_ID})) {
+                            $data['suffix'] = DomainManager::getDomainSuffix($item->{BaseModel::SITE_ID});
+                        }
+                        foreach ($selectField as $key) {
+
+                            if (!isset($data[$key]) && isset($item->{$key})) {
+                                $data[$key] = $item->{$key};
                             }
                         }
+                        array_push($result['items'], $data);
                     });
-                    $data['checked'] = false;
-
-                    if (isset($item->{BaseModel::SITE_ID})) {
-                        $data['suffix'] = DomainManager::getDomainSuffix($item->{BaseModel::SITE_ID});
-                    }
-                    foreach ($selectField as $key) {
-
-                        if (!isset($data[$key]) && isset($item->{$key})) {
-                            $data[$key] = $item->{$key};
-                        }
-                    }
-                    array_push($result['items'], $data);
-                });
 
                 $this->_getCurrentPaginationInfo($request, $items, $result);
                 break;

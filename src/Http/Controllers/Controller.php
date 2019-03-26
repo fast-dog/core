@@ -2,7 +2,7 @@
 
 namespace FastDog\Core\Http\Controllers;
 
-use Carbon\Carbon;
+use FastDog\Core\Events\JsonPrepare;
 use FastDog\Core\Models\Domain;
 use FastDog\Core\Models\DomainManager;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -74,24 +74,10 @@ class Controller extends BaseController
 //        $result['notifications'] = Notifications::getNew();
 //        $result['messages'] = $messageManager->getNew();
 
+        event(new JsonPrepare($result));
+
         return response()->json($result);
     }
-
-    /**
-     * Обработка внешнего фильтра модели
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param Request $request
-     * @param string $scope
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @return mixed
-     * @deprecated
-     */
-    public function filter(&$query, $request, &$scope, $model)
-    {
-        return null;
-    }
-
 
     /**
      * Обновление полей модели
@@ -99,6 +85,7 @@ class Controller extends BaseController
      * @param array $data
      * @param \Illuminate\Database\Eloquent\Model $model
      * @return bool
+     * @deprecated
      */
     protected function updatedModel($data, $model)
     {

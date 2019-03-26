@@ -33,5 +33,17 @@
       "FastDog\\Core\\": "src"
     }
   },
-  "minimum-stability": "dev"
+  "minimum-stability": "dev",
+  "extra": {
+    "laravel": {
+      "dont-discover": [
+        "*"
+      ]
+    }
+  },
+  "scripts": {
+    "post-root-package-install": [
+      "FastDog\\"
+    ]
+  }
 }

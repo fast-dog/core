@@ -1,25 +1,18 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dg
- * Date: 30.05.2018
- * Time: 11:36
- */
 
 namespace FastDog\Core\Listeners;
 
 
 use FastDog\Core\Interfaces\AdminPrepareEventInterface;
-use FastDog\Core\Models\BaseModel;
 use Illuminate\Http\Request;
 
 /**
- *
+ * Class JsonPrepare
  * @package FastDog\Core\Listeners
  * @version 0.2.0
  * @author Андрей Мартынов <d.g.dev482@gmail.com>
  */
-class ModelBeforeSave
+class JsonPrepare
 {
     /**
      * @var Request
@@ -40,21 +33,9 @@ class ModelBeforeSave
      */
     public function handle(AdminPrepareEventInterface $event)
     {
-        /**
-         * @var $model BaseModel
-         */
-        $model = $event->getItem();
         $data = $event->getData();
-        $data['data'] = (is_string($data['data'])) ?(object) json_decode($data['data']) : (object)$data['data'];
 
-        $packParameters = $model->getExtractParameterNames();
-        $allData = $this->request->all();
-        foreach ($packParameters as $name) {
-            if (isset($allData[$name])) {
-                $data['data']->{$name} = $allData[$name];
-            }
-        }
-        $data['data'] = json_encode($data['data']);
+
         if (config('app.debug')) {
             $data['_events'][] = __METHOD__;
         }

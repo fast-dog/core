@@ -8,7 +8,8 @@
 
 namespace FastDog\Core\Traits;
 
-use FastDog\Modules\Config\Entity\DomainManager;
+
+use FastDog\Core\Models\DomainManager;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -52,7 +53,7 @@ trait StateTrait
      */
     public function scopeDefaultAdmin(Builder $query)
     {
-        $query->whereIn(self::SITE_ID, DomainManager::getScopeIds(false));
+        $query->whereIn(self::SITE_ID, DomainManager::getScopeIds());
 
         return $query->where(self::STATE, '=', self::STATE_PUBLISHED);
     }

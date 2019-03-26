@@ -1,15 +1,14 @@
 <?php
 
-namespace FastDog\Core\Controllers;
+namespace FastDog\Core\Http\Controllers;
 
 
-use FastDog\Config\Entity\DomainManager;
-use FastDog\Content\Entity\ContentConfig;
-use FastDog\Core\AdminMenu;
-use FastDog\Core\Desktop;
 use FastDog\Core\Http\Controllers\Controller;
-use FastDog\Users\Entity\User;
+use FastDog\Core\Models\AdminMenu;
+use FastDog\Core\Models\Desktop;
+use FastDog\Core\Models\DomainManager;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
@@ -48,7 +47,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Авторизация
+     * Страница авторизации
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -57,12 +56,19 @@ class AdminController extends Controller
         return view('core::admin.login');
     }
 
+    /**
+     * Авторизация
+     *
+     * @param Request $request
+     * @return JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function postLogin(Request $request)
     {
         $request->merge([
-            User::TYPE => User::USER_TYPE_ADMIN,
-            User::STATUS => User::STATUS_ACTIVE,
-            User::SITE_ID => DomainManager::getSiteId(),
+            'type' => 'admin',
+            'status' => 'active',
+            'site_id' => DomainManager::getSiteId(),
         ]);
 
         return $this->login($request);
@@ -74,7 +80,7 @@ class AdminController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getMenu(Request $request)
+    public function getMenu(Request $request): JsonResponse
     {
         $result = ['success' => false];
         $result['items'] = AdminMenu::get();
@@ -107,7 +113,7 @@ class AdminController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDashboardStatistic(Request $request)
+    public function getDashboardStatistic(Request $request): JsonResponse
     {
         $result = ['success' => true, 'items' => [[]]];
 
@@ -120,7 +126,7 @@ class AdminController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDesktop(Request $request)
+    public function getDesktop(Request $request): JsonResponse
     {
         $result = ['success' => true, 'items' => []];
 
@@ -143,7 +149,7 @@ class AdminController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function postDesktopSort(Request $request)
+    public function postDesktopSort(Request $request): JsonResponse
     {
         $result = ['success' => true, 'items' => []];
 
@@ -162,8 +168,9 @@ class AdminController extends Controller
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
-    public function postDesktopDelete(Request $request)
+    public function postDesktopDelete(Request $request): JsonResponse
     {
         $widget = Desktop::where('id', $request->input('id'))->first();
         Desktop::check('N', [

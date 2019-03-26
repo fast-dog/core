@@ -9,7 +9,7 @@
 namespace FastDog\Core\Listeners;
 
 use FastDog\Core\Interfaces\AdminPrepareEventInterface;
-use FastDog\Modules\Config\Entity\DomainManager;
+use FastDog\Core\Models\DomainManager;
 use Illuminate\Http\Request;
 
 /**

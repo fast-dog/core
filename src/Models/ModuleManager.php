@@ -11,7 +11,6 @@ namespace FastDog\Core\Models;
 
 use FastDog\Core\Interfaces\ModuleInterface;
 use FastDog\Core\Store;
-use FastDog\Modules\Config\Entity\DomainManager;
 use Chumper\Zipper\Zipper;
 
 /**
@@ -102,9 +101,8 @@ class ModuleManager
         $this->moduleInstance = ($isRedis) ? \Cache::tags(['core'])->get($key, null) : \Cache::get($key, null);
 
         if ($this->moduleInstance === null) {
-            $items = Module::get();
             $this->moduleInstance = [];
-            foreach ($items as $item) {
+            $items = Module::get()->each(function (Module $item) {
                 $item->{Module::DATA} = json_decode($item->{Module::DATA});
                 if (isset($item->{Module::DATA}->source) && !isset($this->moduleInstance[$item->{Module::DATA}->source->class])) {
                     $this->moduleInstance[$item->{Module::DATA}->source->class] = new $item->{Module::DATA}->source->class();
@@ -125,7 +123,7 @@ class ModuleManager
                     $item->{Module::DATA}->accessList = $accessList;
                     $this->moduleInstance[$item->{Module::DATA}->source->class]->setConfig($item->{Module::DATA});
                 }
-            }
+            });
             if ($isRedis) {
                 \Cache::tags(['core'])->put($key, $this->moduleInstance, config('cache.tll_core', 5));
             } else {
@@ -379,6 +377,9 @@ class ModuleManager
         return true;
     }
 
+    /**
+     * @param $params
+     */
     public function moduleInstall($params)
     {
         $tmp = $this->getTmp();

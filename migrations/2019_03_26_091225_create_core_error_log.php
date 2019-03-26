@@ -22,7 +22,7 @@ class CreateCoreErrorLog extends Migration
                 $table->timestamps();
                 $table->softDeletes();
             });
-            DB::statement("ALTER TABLE `system_error_log` comment 'Ошибки зафиксированные скриптом'");
+            DB::statement("ALTER TABLE `core_error_log` comment 'Ошибки зафиксированные скриптом'");
         }
     }
 

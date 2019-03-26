@@ -8,8 +8,7 @@
 
 namespace FastDog\Core\Form\Traits;
 
-
-use FastDog\Core\BaseModel;
+use FastDog\Core\Models\BaseModel;
 use FastDog\Core\Properties\BaseProperties;
 use FastDog\Core\Properties\BasePropertiesSelectValues;
 use FastDog\Core\Properties\Traits\PropertiesTrait;

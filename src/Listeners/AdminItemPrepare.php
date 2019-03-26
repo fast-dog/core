@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 /**
  * Class AdminPrepare
- * @package FastDog\Modules\DataSource\Listeners
+ * @package FastDog\Core\Listeners
  * @version 0.2.0
  * @author Андрей Мартынов <d.g.dev482@gmail.com>
  */

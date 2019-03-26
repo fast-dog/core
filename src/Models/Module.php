@@ -8,11 +8,7 @@
 
 namespace FastDog\Core\Models;
 
-use FastDog\Core\BaseModel;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 /**
  * Модель хранения данных о установленных модулях
