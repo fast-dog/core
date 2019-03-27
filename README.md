@@ -1,10 +1,8 @@
+<p align="center">
+  <img  src="/assets/css/fast-dog.png">
+</p>
+
 ## Core for FastDog Cms
-
-
-
-![](assets/css/fast-dog.png?style=centerme)
-
-
 
 ## Add service provider
     
@@ -14,8 +12,3 @@
     
     php artisan vendor:publish --tag=config
     php artisan vendor:publish --tag=public
-
-img[src$="centerme"] {
-  display:block;
-  margin: 0 auto;
-}
