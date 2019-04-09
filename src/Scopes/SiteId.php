@@ -14,8 +14,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Глобальная заготовка для моделей с фильтром по коду сайта
- *
  * @package FastDog\Core\Scopes
  * @version 0.2.0
  * @author Андрей Мартынов <d.g.dev482@gmail.com>
