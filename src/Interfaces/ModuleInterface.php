@@ -2,7 +2,7 @@
 
 namespace FastDog\Core\Interfaces;
 
-use FastDog\Core\Models\Components;
+
 use Illuminate\Http\Request;
 
 /**
@@ -35,7 +35,7 @@ interface ModuleInterface
      *
      * @return void
      */
-    public function initEvents(): void;
+    public function initEvents(): array ;
 
     /**
      * Возвращает доступные шаблоны для отображения страниц
