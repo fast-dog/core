@@ -17,8 +17,8 @@ class Admin
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -37,7 +37,7 @@ class Admin
             }
         } else {
             return ($request->ajax()) ? response()->json(['error' => 'Unauthorized.'], 401) :
-                response('Unauthorized.', 401);
+                redirect()->guest(config('core.admin_path', 'admin') . '/login');
         }
 
         return $next($request);
