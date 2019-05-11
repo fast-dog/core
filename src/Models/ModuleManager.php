@@ -29,7 +29,16 @@ class ModuleManager
      * Массив экземпляров модулей
      * @var array $moduleInstance
      */
-    public $moduleInstance = [];
+    protected $moduleInstance = [];
+
+    /**
+     * @param $id
+     * @param array $data
+     */
+    public function pushModule($id, array $data): void
+    {
+        $this->moduleInstance[$id] = $data;
+    }
 
     /**
      * Проверка существования экземпляра модуля
@@ -96,42 +105,6 @@ class ModuleManager
      */
     public function getModules()
     {
-        $key = __METHOD__ . '::' . DomainManager::getSiteId() . '::core-modules';
-        $isRedis = config('cache.default') == 'redis';
-        $this->moduleInstance = ($isRedis) ? \Cache::tags(['core'])->get($key, null) : \Cache::get($key, null);
-
-        if ($this->moduleInstance === null) {
-            $this->moduleInstance = [];
-            $items = Module::get()->each(function (Module $item) {
-                $item->{Module::DATA} = json_decode($item->{Module::DATA});
-                if (isset($item->{Module::DATA}->source) && !isset($this->moduleInstance[$item->{Module::DATA}->source->class])) {
-                    $this->moduleInstance[$item->{Module::DATA}->source->class] = new $item->{Module::DATA}->source->class();
-
-                    $accessList = [];
-                    if (isset($item->{Module::DATA}->route)) {
-                        if (isset($item->{Module::DATA}->route->access)) {
-                            $accessList[$item->{Module::DATA}->route->route] = $item->{Module::DATA}->route->access;
-                        }
-                        if (isset($item->{Module::DATA}->route->children)) {
-                            foreach ($item->{Module::DATA}->route->children as $route) {
-                                if (isset($route->access)) {
-                                    $accessList[$route->route] = $route->access;
-                                }
-                            }
-                        }
-                    }
-                    $item->{Module::DATA}->accessList = $accessList;
-                    $this->moduleInstance[$item->{Module::DATA}->source->class]->setConfig($item->{Module::DATA});
-                }
-            });
-            if ($isRedis) {
-                \Cache::tags(['core'])->put($key, $this->moduleInstance, config('cache.tll_core', 5));
-            } else {
-                \Cache::put($key, $this->moduleInstance, config('cache.tll_core', 5));
-            }
-        }
-
-
         return $this->moduleInstance;
     }
 
@@ -220,6 +193,7 @@ class ModuleManager
      * Возвращает путь к временной директории для резервного копирования\обновления модулей
      *
      * @return string
+     * @deprecated
      */
     protected function getTmp()
     {
@@ -231,6 +205,7 @@ class ModuleManager
      * Директория модулей
      *
      * @return string
+     * @deprecated
      */
     protected function getModulesDir()
     {
@@ -243,6 +218,7 @@ class ModuleManager
      * Возвращает дирекотрю шаблонов\файлов локализации
      *
      * @return string
+     * @deprecated
      */
     protected function getResourceDir()
     {
@@ -259,6 +235,7 @@ class ModuleManager
      * @param array $params
      * @return bool
      * @throws \Exception
+     * @deprecated
      */
     public function cmd($params = [])
     {
@@ -316,6 +293,7 @@ class ModuleManager
      * @throws \Spatie\DbDumper\Exceptions\CannotSetParameter
      * @throws \Spatie\DbDumper\Exceptions\CannotStartDump
      * @throws \Spatie\DbDumper\Exceptions\DumpFailed
+     * @deprecated
      */
     protected function moduleBackup($params): bool
     {
@@ -379,6 +357,7 @@ class ModuleManager
 
     /**
      * @param $params
+     * @deprecated
      */
     public function moduleInstall($params)
     {

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @package FastDog\Core\Module
  * @version 0.2.0
  * @author Андрей Мартынов <d.g.dev482@gmail.com>
+ * @deprecated
  */
 class Module extends Model
 {

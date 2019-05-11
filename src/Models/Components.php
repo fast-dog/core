@@ -1,6 +1,12 @@
 <?php namespace App\Core\Module;
 
 
+use App\Core\Media\Interfaces\MediaInterface;
+use App\Core\Media\Traits\MediaTraits;
+use FastDog\Core\Models\BaseModel;
+use FastDog\Core\Properties\Interfases\PropertiesInterface;
+use FastDog\Core\Properties\Traits\PropertiesTrait;
+use FastDog\Core\Table\Interfaces\TableModelInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Collection;
