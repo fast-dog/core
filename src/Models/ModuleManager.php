@@ -12,6 +12,7 @@ namespace FastDog\Core\Models;
 use FastDog\Core\Interfaces\ModuleInterface;
 use FastDog\Core\Store;
 use Chumper\Zipper\Zipper;
+use Illuminate\Support\Collection;
 
 /**
  * Менеджер моудлей
@@ -96,16 +97,11 @@ class ModuleManager
     /**
      * Определение списка модулей
      *
-     * Метод проверяет и устанавливает экземпляры модулей в контексте текущего объекта.
-     *
-     * Метод кэширует данные, если доступен Redis, кэширование будет в теге 'core'.
-     * Ключ кэширования: __METHOD__ . '::' . DomainManager::getSiteId(). '::core-modules'
-     *
-     * @return array
+     * @return Collection
      */
-    public function getModules()
+    public function getModules(): Collection
     {
-        return $this->moduleInstance;
+        return collect($this->moduleInstance);
     }
 
     /**
