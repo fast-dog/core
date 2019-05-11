@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dg
- * Date: 01.11.2016
- * Time: 23:58
- */
-
 namespace FastDog\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -24,16 +17,19 @@ class Module extends Model
      * @const string
      */
     const NAME = 'name';
+
     /**
      * Дополнительная информация
      * @const string
      */
     const DATA = 'data';
+
     /**
      * Версия
      * @const string
      */
     const VERSION = 'version';
+
     /**
      * Приоритет отображения
      *
