@@ -65,6 +65,11 @@ class  CoreServiceProvider extends LaravelServiceProvider
 
         $this->handleViews();
 
+        $this->app->singleton(ModuleManager::class, function () {
+            $manager = new ModuleManager();
+
+            return $manager;
+        });
     }
 
     /**
