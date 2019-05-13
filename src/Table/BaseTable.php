@@ -1,15 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dg
- * Date: 17.03.2018
- * Time: 19:26
- */
 
 namespace FastDog\Core\Table;
 
 
-use FastDog\Core\BaseModel;
+use FastDog\Core\Models\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;

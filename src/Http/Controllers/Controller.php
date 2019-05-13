@@ -11,6 +11,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Collection;
 
 /**
  * Базовый контроллер
@@ -40,12 +41,27 @@ class Controller extends BaseController
      * @var array
      */
     public static $orderField = ['created_at', 'title'];
+
     /**
      * Направление сортировки
      *
      * @var array
      */
     public static $orderDirections = ['asc', 'desc'];
+
+    /**
+     * @var Collection $breadcrumbs
+     */
+    protected $breadcrumbs;
+
+    /**
+     * Controller constructor.
+     */
+    public function __construct()
+    {
+        $this->breadcrumbs = collect([]);
+        $this->breadcrumbs->push(['url' => '/', 'name' => trans('app.Главная')]);
+    }
 
     /**
      * Ответ JSON
