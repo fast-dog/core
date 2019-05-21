@@ -15,7 +15,7 @@ class CreateSystemTableFilter extends Migration
     {
         Schema::create('system_table_filter', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('table_id');
+            $table->unsignedInteger('table_id', false);
             $table->string('name');
             $table->json('data')->comment('Дополнительные параметры');
             $table->timestamps();
