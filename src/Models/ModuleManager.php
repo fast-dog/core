@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dg
- * Date: 01.11.2016
- * Time: 23:58
- */
-
 namespace FastDog\Core\Models;
 
 

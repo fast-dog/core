@@ -15,6 +15,7 @@ use FastDog\Core\Table\Filters\BaseFilter;
 use FastDog\Core\Table\Interfaces\TableModelInterface;
 use Baum\Node;
 use Carbon\Carbon;
+use FastDog\User\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -129,53 +130,53 @@ trait TableTrait
                     })
                     ->orderBy($this->order, $this->direction)
                     ->paginate(\Request::input('limit', $this->limit));
-                    $items->each(function (BaseModel $item) use ($cols, &$result, $selectField) {
-                        $data = [];
-                        if (isset($item->{BaseModel::STATE})) {
-                            $data[BaseModel::STATE] = $item->{BaseModel::STATE};
-                        }
-                        if (in_array(BaseModel::DATA, $selectField)) {
-                            $data[BaseModel::DATA] = (is_string($item->{BaseModel::DATA})) ? json_decode($item->{BaseModel::DATA}) : $item->{BaseModel::DATA};
-                        }
+                $items->each(function (BaseModel $item) use ($cols, &$result, $selectField) {
+                    $data = [];
+                    if (isset($item->{BaseModel::STATE})) {
+                        $data[BaseModel::STATE] = $item->{BaseModel::STATE};
+                    }
+                    if (in_array(BaseModel::DATA, $selectField)) {
+                        $data[BaseModel::DATA] = (is_string($item->{BaseModel::DATA})) ? json_decode($item->{BaseModel::DATA}) : $item->{BaseModel::DATA};
+                    }
 
-                        $cols->each(function ($col) use ($item, &$data, &$relations) {
-                            $col = (array)$col;
-                            if (isset($col['related'])) {
-                                $related = explode(':', $col['related']);
-                                if (!isset($relations[$col['key']][$item->{$col['key']}])) {
-                                    $relations[$col['key']][$item->{$col['key']}] = $item->{$related[0]};
+                    $cols->each(function ($col) use ($item, &$data, &$relations) {
+                        $col = (array)$col;
+                        if (isset($col['related'])) {
+                            $related = explode(':', $col['related']);
+                            if (!isset($relations[$col['key']][$item->{$col['key']}])) {
+                                $relations[$col['key']][$item->{$col['key']}] = $item->{$related[0]};
+                            }
+                            if ($relations[$col['key']][$item->{$col['key']}]) {
+                                switch ($related[1]) {
+                                    case 'count()':
+                                        $data[$col['key']] = $relations[$col['key']][$item->{$col['key']}]->count();
+                                        break;
+                                    default:
+                                        $data[$col['key']] = $relations[$col['key']][$item->{$col['key']}]->{$related[1]};
+                                        break;
                                 }
-                                if ($relations[$col['key']][$item->{$col['key']}]) {
-                                    switch ($related[1]) {
-                                        case 'count()':
-                                            $data[$col['key']] = $relations[$col['key']][$item->{$col['key']}]->count();
-                                            break;
-                                        default:
-                                            $data[$col['key']] = $relations[$col['key']][$item->{$col['key']}]->{$related[1]};
-                                            break;
-                                    }
-                                }
+                            }
+                        } else {
+                            if ($item->{$col['key']} instanceof Carbon) {
+                                $data[$col['key']] = $item->{$col['key']}->format($this->getDateTimeFormat());
                             } else {
-                                if ($item->{$col['key']} instanceof Carbon) {
-                                    $data[$col['key']] = $item->{$col['key']}->format($this->getDateTimeFormat());
-                                } else {
-                                    $data[$col['key']] = $item->{$col['key']};
-                                }
-                            }
-                        });
-                        $data['checked'] = false;
-
-                        if (isset($item->{BaseModel::SITE_ID})) {
-                            $data['suffix'] = DomainManager::getDomainSuffix($item->{BaseModel::SITE_ID});
-                        }
-                        foreach ($selectField as $key) {
-
-                            if (!isset($data[$key]) && isset($item->{$key})) {
-                                $data[$key] = $item->{$key};
+                                $data[$col['key']] = $item->{$col['key']};
                             }
                         }
-                        array_push($result['items'], $data);
                     });
+                    $data['checked'] = false;
+
+                    if (isset($item->{BaseModel::SITE_ID})) {
+                        $data['suffix'] = DomainManager::getDomainSuffix($item->{BaseModel::SITE_ID});
+                    }
+                    foreach ($selectField as $key) {
+
+                        if (!isset($data[$key]) && isset($item->{$key})) {
+                            $data[$key] = $item->{$key};
+                        }
+                    }
+                    array_push($result['items'], $data);
+                });
 
                 $this->_getCurrentPaginationInfo($request, $items, $result);
                 break;
@@ -337,10 +338,10 @@ trait TableTrait
         $user = \Auth::getUser();
 
         return [
-            'reorder' => $user->can('reorder.' . $this->accessKey),
-            'delete' => $user->can('delete.' . $this->accessKey),
-            'update' => $user->can('update.' . $this->accessKey),
-            'create' => $user->can('create.' . $this->accessKey),
+            'reorder' => ($user) ? $user->can('reorder') : false,
+            'delete' => ($user) ? $user->can('delete') : false,
+            'update' => ($user) ? $user->can('update') : false,
+            'create' => ($user) ? $user->can('create') : false,
         ];
     }
 

@@ -5,6 +5,7 @@ namespace FastDog\Core\Http\Controllers;
 use FastDog\Core\Events\JsonPrepare;
 use FastDog\Core\Models\Domain;
 use FastDog\Core\Models\DomainManager;
+use FastDog\User\Models\MessageManager;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -50,6 +51,11 @@ class Controller extends BaseController
     public static $orderDirections = ['asc', 'desc'];
 
     /**
+     * @var string $page_title
+     */
+    protected $page_title = '';
+
+    /**
      * @var Collection $breadcrumbs
      */
     protected $breadcrumbs;
@@ -82,13 +88,20 @@ class Controller extends BaseController
             $result['_debug'] = config('app.debug');
             $result['__METHOD__'] = $method;
         }
-//        /**
-//         * @var $messageManager MessageManager
-//         */
-//        $messageManager = \App::make(MessageManager::class);
-//
+
+        if (class_exists(MessageManager::class)) {
+            /**
+             * @var $messageManager MessageManager
+             */
+            $messageManager = \App::make(MessageManager::class);
+            $result['messages'] = $messageManager->getNew();
+        }
+
 //        $result['notifications'] = Notifications::getNew();
-//        $result['messages'] = $messageManager->getNew();
+
+
+        $result['page_title'] = $this->page_title;
+        $result['breadcrumbs'] = $this->breadcrumbs;
 
         event(new JsonPrepare($result));
 
