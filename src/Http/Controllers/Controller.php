@@ -66,7 +66,7 @@ class Controller extends BaseController
     public function __construct()
     {
         $this->breadcrumbs = collect([]);
-        $this->breadcrumbs->push(['url' => '/', 'name' => trans('app.Главная')]);
+        $this->breadcrumbs->push(['url' => '/', 'name' => trans('core::interface.Главная')]);
     }
 
     /**

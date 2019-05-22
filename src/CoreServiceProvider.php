@@ -39,6 +39,7 @@ class  CoreServiceProvider extends LaravelServiceProvider
         $this->handleConfigs();
         $this->handleRoutes();
         $this->handleMigrations();
+        $this->handleLang();
 
         /**
          * Определяем параметры шаблона
@@ -70,6 +71,18 @@ class  CoreServiceProvider extends LaravelServiceProvider
 
             return $manager;
         });
+    }
+
+    /**
+     * Определение локализации
+     */
+    private function handleLang(): void
+    {
+        $path = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR;
+        $this->loadTranslationsFrom($path, self::NAME);
+        $this->publishes([
+            $path => resource_path('lang/vendor/fast_dog/' . self::NAME),
+        ]);
     }
 
     /**
