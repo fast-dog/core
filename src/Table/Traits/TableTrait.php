@@ -130,7 +130,7 @@ trait TableTrait
                     })
                     ->orderBy($this->order, $this->direction)
                     ->paginate(\Request::input('limit', $this->limit));
-                $items->each(function (BaseModel $item) use ($cols, &$result, $selectField) {
+                $items->each(function ($item) use ($cols, &$result, $selectField) {
                     $data = [];
                     if (isset($item->{BaseModel::STATE})) {
                         $data[BaseModel::STATE] = $item->{BaseModel::STATE};
