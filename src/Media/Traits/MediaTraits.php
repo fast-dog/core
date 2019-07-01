@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Core\Media\Traits;
+namespace FastDog\Core\Media\Traits;
 
-use App\Core\Media\BaseMedia;
+use FastDog\Core\Media\BaseMedia;
 use FastDog\Core\Models\ModuleManager;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 /**
  * Trait MediaTraits
  *
- * @package App\Core\Media\Traits
+ * @package FastDog\Core\Media\Traits
  * @version 0.2.0
  * @author Андрей Мартынов <d.g.dev482@gmail.com>
  */

@@ -1,5 +1,5 @@
 <?php
-namespace App\Core\Media;
+namespace FastDog\Core\Media;
 
 
 use App\Modules\Media\Entity\GalleryItem;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Базовая реализация работы с файлами
  *
- * @package App\Core\Media
+ * @package FastDog\Core\Media
  * @version 0.2.0
  * @author Андрей Мартынов <d.g.dev482@gmail.com>
  */

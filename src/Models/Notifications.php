@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
  *
  * Реализация системы уведомлений о происходящих в автоматическом режиме событиях
  *
- * @package App\Core
+ * @package FastDog\Core
  * @version 0.2.0
  * @author Андрей Мартынов <d.g.dev482@gmail.com>
  */

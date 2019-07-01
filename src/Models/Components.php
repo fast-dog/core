@@ -1,8 +1,8 @@
-<?php namespace App\Core\Module;
+<?php namespace FastDog\Core\Module;
 
 
-use App\Core\Media\Interfaces\MediaInterface;
-use App\Core\Media\Traits\MediaTraits;
+use FastDog\Core\Media\Interfaces\MediaInterface;
+use FastDog\Core\Media\Traits\MediaTraits;
 use FastDog\Core\Models\BaseModel;
 use FastDog\Core\Properties\Interfases\PropertiesInterface;
 use FastDog\Core\Properties\Traits\PropertiesTrait;
@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Schema;
  *      &lt;/div&gt;&lt;!--/navbar-collapse--&gt;
  * </pre>
  *
- * @package App\Core\Module
+ * @package FastDog\Core\Module
  * @version 0.2.0
  * @author Андрей Мартынов <d.g.dev482@gmail.com>
  */
@@ -55,7 +55,7 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
      *
      * <pre>
      *  [
-     *    "core::html" => "App\Core\Module\SiteModules"
+     *    "core::html" => "FastDog\Core\Module\SiteModules"
      *    "banner::items" => "App\Modules\Banner\Banners"
      *  ]
      *</pre>
@@ -385,7 +385,7 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
      *
      * <pre>
      *  [
-     *    "core::html" => "App\Core\Module\SiteModules",
+     *    "core::html" => "FastDog\Core\Module\SiteModules",
      *    "banner::items" => "App\Modules\Banner\Banners",
      *     ........
      *  ]

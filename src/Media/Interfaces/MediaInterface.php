@@ -6,13 +6,13 @@
  * Time: 18:11
  */
 
-namespace App\Core\Media\Interfaces;
+namespace FastDog\Core\Media\Interfaces;
 
 use Illuminate\Support\Collection;
 
 /**
  * Interface MediaInterface
- * @package App\Core\Media\Interfaces
+ * @package FastDog\Core\Media\Interfaces
  * @version 0.2.0
  * @author Андрей Мартынов <d.g.dev482@gmail.com>
  */
