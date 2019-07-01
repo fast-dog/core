@@ -16,7 +16,7 @@ class CreateSystemPropertiesSelectValues extends Migration
     {
         Schema::create('system_properties_select_values', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer(BasePropertiesSelectValues::PROPERTY_ID);
+            $table->unsignedInteger(BasePropertiesSelectValues::PROPERTY_ID);
             $table->string(BasePropertiesSelectValues::NAME, 50);
             $table->string(BasePropertiesSelectValues::ALIAS, 50);
 
