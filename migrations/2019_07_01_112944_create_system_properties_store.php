@@ -1,5 +1,6 @@
 <?php
 
+use FastDog\Core\Properties\BasePropertiesStorage;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -15,7 +16,26 @@ class CreateSystemPropertiesStore extends Migration
     {
         Schema::create('system_properties_store', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamps();
+
+
+            $table->unsignedInteger(BasePropertiesStorage::PROPERTY_ID);
+            $table->unsignedInteger(BasePropertiesStorage::MODEL_ID);
+            $table->unsignedInteger(BasePropertiesStorage::ITEM_ID);
+            $table->string(BasePropertiesStorage::VALUE, 255);
+//            $table->unsignedInteger(BasePropertiesStorage::VALUE_ID);
+
+            $table->index([BasePropertiesStorage::PROPERTY_ID,
+                BasePropertiesStorage::MODEL_ID,
+                BasePropertiesStorage::ITEM_ID], 'IDX_system_properties_store');
+
+            $table->index([BasePropertiesStorage::MODEL_ID,
+                BasePropertiesStorage::ITEM_ID], 'IDX_system_properties_store_model_id');
+        });
+
+        Schema::table('system_properties_store', function ($table) {
+            $table->foreign(BasePropertiesStorage::PROPERTY_ID, 'FK_system_properties_store_pro')
+                ->references('id')
+                ->on('system_properties');
         });
     }
 
@@ -26,6 +46,11 @@ class CreateSystemPropertiesStore extends Migration
      */
     public function down()
     {
+        if (Schema::hasTable('system_properties_store')) {
+            Schema::table('system_properties_store', function ($table) {
+                $table->dropForeign('FK_system_properties_store_pro');
+            });
+        }
         Schema::dropIfExists('system_properties_store');
     }
 }
