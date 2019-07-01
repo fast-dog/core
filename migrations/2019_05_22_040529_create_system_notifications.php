@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use FastDog\Core\Models\Notifications;
 
 class CreateSystemNotifications extends Migration
 {
@@ -17,10 +18,10 @@ class CreateSystemNotifications extends Migration
         if (!Schema::hasTable('system_notifications')) {
             Schema::create('system_notifications', function (Blueprint $table) {
                 $table->increments('id');
-                $table->integer(self::USER_ID)->comment('Идентификатор пользователя');
-                $table->json(self::DATA)->comment('Дополнительные параметры');
-                $table->tinyInteger(self::READ)->default(0)->comment('Прочитано или нет');
-                $table->mediumInteger(self::TYPE)->default(0);
+                $table->integer(Notifications::USER_ID)->comment('Идентификатор пользователя');
+                $table->json(Notifications::DATA)->comment('Дополнительные параметры');
+                $table->tinyInteger(Notifications::READ)->default(0)->comment('Прочитано или нет');
+                $table->mediumInteger(Notifications::TYPE)->default(0);
 
                 $table->timestamps();
                 $table->softDeletes();
