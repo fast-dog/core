@@ -2,13 +2,11 @@
 
 namespace FastDog\Core\Properties\Traits;
 
-
-use FastDog\Core\Models\ModuleManager;
+use FastDog\Core\Models\DomainManager;
 use FastDog\Core\Properties\BaseProperties;
 use FastDog\Core\Properties\BasePropertiesSelectValues;
 use FastDog\Core\Properties\BasePropertiesStorage;
 use FastDog\Core\Store;
-use FastDog\Modules\Config\Entity\DomainManager;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
