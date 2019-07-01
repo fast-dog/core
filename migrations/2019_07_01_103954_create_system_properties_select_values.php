@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreteSystemPropertiesSelectValues extends Migration
+class CreateSystemPropertiesSelectValues extends Migration
 {
     /**
      * Run the migrations.
