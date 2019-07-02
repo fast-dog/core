@@ -22,7 +22,7 @@ class CreateSystemPropertiesStore extends Migration
             $table->unsignedInteger(BasePropertiesStorage::MODEL_ID);
             $table->unsignedInteger(BasePropertiesStorage::ITEM_ID);
             $table->string(BasePropertiesStorage::VALUE, 255);
-            $table->unsignedInteger('value_id');
+            $table->unsignedInteger('value_id')->nullable();
 
             $table->index([BasePropertiesStorage::PROPERTY_ID,
                 BasePropertiesStorage::MODEL_ID,
@@ -33,7 +33,7 @@ class CreateSystemPropertiesStore extends Migration
         });
 
         Schema::table('system_properties_store', function ($table) {
-            $table->foreign(BasePropertiesStorage::PROPERTY_ID, 'FK_system_properties_store_pro')
+            $table->foreign(BasePropertiesStorage::PROPERTY_ID, 'FK_system_properties_store_property_id')
                 ->references('id')
                 ->on('system_properties');
         });
