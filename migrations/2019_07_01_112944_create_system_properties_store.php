@@ -22,7 +22,7 @@ class CreateSystemPropertiesStore extends Migration
             $table->unsignedInteger(BasePropertiesStorage::MODEL_ID);
             $table->unsignedInteger(BasePropertiesStorage::ITEM_ID);
             $table->string(BasePropertiesStorage::VALUE, 255);
-//            $table->unsignedInteger(BasePropertiesStorage::VALUE_ID);
+            $table->unsignedInteger('value_id');
 
             $table->index([BasePropertiesStorage::PROPERTY_ID,
                 BasePropertiesStorage::MODEL_ID,
