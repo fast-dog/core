@@ -43,7 +43,9 @@
   },
   "scripts": {
     "post-root-package-install": [
-      
+      "php artisan vendor:publish --provider='FastDog\\Core\\CoreServiceProvider';",
+      "php artisan vendor:publish --provider='FastDog\\Core\\CoreServiceProvider' --tag=config;",
+      "php artisan vendor:publish --provider='FastDog\\Core\\CoreServiceProvider' --tag=public;"
     ]
   }
 }
