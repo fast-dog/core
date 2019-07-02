@@ -48,7 +48,7 @@ class CreateSystemPropertiesStore extends Migration
     {
         if (Schema::hasTable('system_properties_store')) {
             Schema::table('system_properties_store', function ($table) {
-                $table->dropForeign('FK_system_properties_store_pro');
+                $table->dropForeign('FK_system_properties_store_property_id');
             });
         }
         Schema::dropIfExists('system_properties_store');
