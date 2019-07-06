@@ -163,6 +163,11 @@ trait TableTrait
                                 $data[$col['key']] = $item->{$col['key']};
                             }
                         }
+
+                        if ((isset($col['modal']) && $col['modal'] === true) && method_exists($item, 'getModalData')) {
+                            $data['_modal'] = $item->getModalData($item->id);
+                        }
+
                     });
                     $data['checked'] = false;
 
