@@ -18,7 +18,6 @@ abstract class FormFieldTypes
     /**
      * Реализация текстового поля: TextFormField
      *
-     * @see /resource/src/components/core/form/fields/TextFormField.ts
      * @const string
      */
     const TYPE_TEXT = 'text-form-field';
@@ -26,7 +25,6 @@ abstract class FormFieldTypes
     /**
      * Реализация текстового поля: TextFormField
      *
-     * @see /resource/src/components/core/form/fields/PasswordFormField.ts
      * @const string
      */
     const TYPE_PASSWORD = 'password-form-field';
@@ -34,7 +32,6 @@ abstract class FormFieldTypes
     /**
      * Реализация текстового поля с блокировкой ввода для псевдонима: TextAliasFormField
      *
-     * @see /resource/src/components/core/form/fields/TextAliasFormField.ts
      * @const string
      */
     const TYPE_TEXT_ALIAS = 'text-form-alias';
@@ -42,7 +39,6 @@ abstract class FormFieldTypes
     /**
      * Реализация выпадающего списка с уровнем доступа: AccessListFormField
      *
-     * @see /resource/src/components/core/form/fields/AccessListFormField.ts
      * @const string
      */
     const TYPE_ACCESS_LIST = 'access-list';
@@ -50,7 +46,6 @@ abstract class FormFieldTypes
     /**
      * Реализация выпадающего списка: SelectFormField
      *
-     * @see /resource/src/components/core/form/fields/SelectFormField.ts
      * @const string
      */
     const TYPE_SELECT = 'select-form-field';
@@ -58,7 +53,6 @@ abstract class FormFieldTypes
     /**
      * Реализация редактора кода: CodeEditorFormField
      *
-     * @see /resource/src/components/core/form/fields/CodeEditorFormField.ts
      * @const string
      */
     const TYPE_CODE_EDITOR = 'code-editor-form-field';
@@ -66,7 +60,6 @@ abstract class FormFieldTypes
     /**
      * Реализация строки поиска по заданному маршруту: SearchFormField
      *
-     * @see /resource/src/components/core/form/fields/SearchFormField.ts
      * @const string
      */
     const TYPE_SEARCH = 'search-form-field';
@@ -74,7 +67,6 @@ abstract class FormFieldTypes
     /**
      * Реализация выбора медиа файла на сервере: MediaFormField
      *
-     * @see /resource/src/components/core/form/fields/MediaFormField.ts
      * @const string
      */
     const TYPE_MEDIA = 'media-form-field';
@@ -82,7 +74,6 @@ abstract class FormFieldTypes
     /**
      * Реализация текстового редактора CKEDITOR: TextEditorFormField
      *
-     * @see /resource/src/components/core/form/fields/TextEditorFormField.ts
      * @const string
      */
     const TYPE_HTML_EDITOR = 'text-editor-form-field';
@@ -90,7 +81,6 @@ abstract class FormFieldTypes
     /**
      * Реализация текстового редактора табов
      *
-     * @see /resource/src/components/core/form/fields/TabsFormField.ts
      * @const string
      */
     const TYPE_TABS_EDITOR = 'tabs-form-field';
@@ -105,7 +95,6 @@ abstract class FormFieldTypes
     /**
      * Реализация поля ввода даты: DateFormField
      *
-     * @see /resource/src/components/core/form/fields/DateFormField.ts
      * @const string
      */
     const TYPE_DATE = 'date-form-field';
@@ -114,7 +103,6 @@ abstract class FormFieldTypes
     /**
      * Компонент для работы с медия материалами: MediaItems
      *
-     * @see /resource/src/components/core/form/components/MediaItems.ts
      * @const string
      */
     const TYPE_COMPONENT_MEDIA = 'media';
@@ -122,7 +110,6 @@ abstract class FormFieldTypes
     /**
      * Компонент для работы с полями для поисковой оптимизации контента: Seo
      *
-     * @see /resource/src/components/core/form/components/Seo.ts
      * @const string
      */
     const TYPE_COMPONENT_SEO = 'seo';
@@ -132,7 +119,6 @@ abstract class FormFieldTypes
      * Компонент для добавления произвольный свойств в контекст объекта
      * (контента, элемента каталога, элемента справочника и т.д.): SamplePropertyTable
      *
-     * @see /resource/src/components/core/form/components/SamplePropertyTable.ts
      * @const string
      */
     const TYPE_COMPONENT_SAMPLE_PROPERTIES = 'sample-properties-table';
@@ -142,7 +128,6 @@ abstract class FormFieldTypes
      * Компонент для работы с значениями свойств категорий в позициях
      * Каталога (сводная таблицы выводимая ТОЛЬКО в форме редактирования элемента каталога): CatalogItemProperties
      *
-     * @see /resource/src/components/core/form/components/CatalogItemProperties.ts
      * @const string
      */
     const TYPE_COMPONENT_CATALOG_ITEM_PROPERTIES = 'catalog-item-properties';
@@ -151,7 +136,6 @@ abstract class FormFieldTypes
      * Компонент для работы с свойствами категорий Каталога
      * (сводная таблицы выводимая ТОЛЬКО в форме редактирования категории)
      *
-     * @see /resource/src/components/core/form/components/CatalogCategoryProperties.ts
      * @const string
      */
     const TYPE_COMPONENT_CATALOG_CATEGORY_PROPERTIES = 'catalog-category-properties';
@@ -161,7 +145,6 @@ abstract class FormFieldTypes
      * такими как габаритные размеры для служб доставки, цены, склады, скидки и торговые предложения.
      * (сводная таблица выводимая ТОЛЬКО в форме редактирования элемента каталога):
      *
-     * @see /resource/src/components/core/form/components/CatalogItemStoreParameters.ts
      * @const string
      */
     const TYPE_COMPONENT_CATALOG_ITEM_STORE_PROPERTIES = 'catalog-item-store-parameters';
@@ -169,7 +152,6 @@ abstract class FormFieldTypes
     /**
      * Компонент для работы с локализацией шаблонов
      *
-     * @see /resource/src/components/core/form/components/TranslateItems.ts
      * @const string
      */
     const TYPE_COMPONENT_TRANSLATE_ITEMS = 'translate-items';
@@ -177,7 +159,6 @@ abstract class FormFieldTypes
     /**
      * Поле выбора времени
      *
-     * @see /resource/src/components/core/form/fields/ClockFormField.ts
      * @const string
      */
     const TYPE_CLOCK_FIELD = 'clock-field';
@@ -185,8 +166,14 @@ abstract class FormFieldTypes
     /**
      * Компонент заполнения времени
      *
-     * @see /resource/src/components/core/form/components/CalendarItems.ts
      * @const string
      */
     const TYPE_CALENDAR_TIMES = 'calendar-times';
+
+    /**
+     * Автодополнение адреса
+     *
+     * @const string
+     */
+    const TYPE_ADDRESS = 'address-form-field';
 }
