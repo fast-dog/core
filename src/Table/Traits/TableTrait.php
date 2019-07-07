@@ -341,12 +341,13 @@ trait TableTrait
          * @var $user User
          */
         $user = \Auth::getUser();
+        $class = get_class($this->model);
 
         return [
-            'reorder' => ($user) ? $user->can('reorder') : false,
-            'delete' => ($user) ? $user->can('delete') : false,
-            'update' => ($user) ? $user->can('update') : false,
-            'create' => ($user) ? $user->can('create') : false,
+            'reorder' => ($user) ? $user->can('reorder', $class) : false,
+            'delete' => ($user) ? $user->can('delete', $class) : false,
+            'update' => ($user) ? $user->can('update', $class) : false,
+            'create' => ($user) ? $user->can('create', $class) : false,
         ];
     }
 
