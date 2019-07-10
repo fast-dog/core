@@ -2,11 +2,10 @@
 
 namespace FastDog\Core\Listeners;
 
-
-use FastDog\Core\BaseModel;
 use FastDog\Core\Interfaces\AdminPrepareEventInterface;
-use FastDog\Core\Module\ModuleManager;
-use FastDog\Modules\Config\Entity\DomainManager;
+use FastDog\Core\Models\BaseModel;
+use FastDog\Core\Models\DomainManager;
+use FastDog\Core\Models\ModuleManager;
 use Illuminate\Http\Request;
 
 /**

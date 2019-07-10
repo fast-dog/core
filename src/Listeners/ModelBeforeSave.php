@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dg
- * Date: 30.05.2018
- * Time: 11:36
- */
-
 namespace FastDog\Core\Listeners;
-
 
 use FastDog\Core\Interfaces\AdminPrepareEventInterface;
 use FastDog\Core\Models\BaseModel;
