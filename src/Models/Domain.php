@@ -151,9 +151,9 @@ class Domain extends Model implements TableModelInterface, PropertiesInterface
     public static function getStatusList(): array
     {
         return [
-            ['id' => self::STATE_PUBLISHED, 'name' => 'Активен'],
-            ['id' => self::STATE_NOT_PUBLISHED, 'name' => 'Отключен'],
-            ['id' => self::STATE_IN_TRASH, 'name' => 'Удален'],
+            ['id' => self::STATE_PUBLISHED, 'name' => trans('config::interface.state.published')],
+            ['id' => self::STATE_NOT_PUBLISHED, 'name' => trans('config::interface.state.not_published')],
+            ['id' => self::STATE_IN_TRASH, 'name' => trans('config::interface.state.in_trash')],
         ];
     }
 
@@ -178,20 +178,20 @@ class Domain extends Model implements TableModelInterface, PropertiesInterface
     {
         return [
             [
-                'name' => trans('app.Название'),
+                'name' => trans('config::forms.general.name'),
                 'key' => Domain::NAME,
                 'domain' => true,
                 'callback' => false,
                 'link' => 'domain_item',
             ],
             [
-                'name' => trans('app.Ссылка'),
+                'name' => trans('config::forms.general.url'),
                 'key' => Domain::URL,
                 'link' => null,
                 'domain' => false,
             ],
             [
-                'name' => trans('app.Код'),
+                'name' => trans('config::forms.general.code') ,
                 'key' => Domain::CODE,
                 'domain' => false,
                 'link' => null,
@@ -219,9 +219,9 @@ class Domain extends Model implements TableModelInterface, PropertiesInterface
             [
                 [
                     BaseFilter::NAME => Domain::NAME,
-                    BaseFilter::PLACEHOLDER => 'Название',
+                    BaseFilter::PLACEHOLDER => trans('config::forms.general.name'),
                     BaseFilter::TYPE => BaseFilter::TYPE_TEXT,
-                    BaseFilter::DISPLAY => false,
+                    BaseFilter::DISPLAY => true,
                     BaseFilter::OPERATOR => (new BaseOperator('LIKE', 'LIKE'))->getOperator(),
                 ],
             ],
