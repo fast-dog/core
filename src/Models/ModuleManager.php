@@ -1,4 +1,5 @@
 <?php
+
 namespace FastDog\Core\Models;
 
 
@@ -63,25 +64,7 @@ class ModuleManager
             $this->getModules();
         }
         if ($class !== null) {
-            $instance = isset($this->moduleInstance[$class]) ? $this->moduleInstance[$class] : null;
-            if ($instance) {
-                $config = $instance->getConfig();
-                if (isset($config->name)) {
-                    /**  @var $storeManager Store */
-                    $storeManager = \App::make(Store::class);
-                    $allModules = $storeManager->getCollection(self::class);
-                    /**
-                     * Методы хранения конфигурации в модулях изменились,
-                     * нужно добавить инициатор определения способа корректного определения текущей конфигурации
-                     */
-                    $item = $allModules->where(Module::NAME, $config->name)->first();
-                    if ($item) {
-                        $instance->setConfig(json_decode($item->data));
-                    }
-                }
-
-                return $instance;
-            }
+            return isset($this->moduleInstance[$class]) ? $this->moduleInstance[$class] : null;
         } else {
             return $this->moduleInstance;
         }
