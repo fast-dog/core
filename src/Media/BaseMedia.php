@@ -2,7 +2,7 @@
 namespace FastDog\Core\Media;
 
 
-use App\Modules\Media\Entity\GalleryItem;
+use FastDog\Media\Models\GalleryItem;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -21,7 +21,7 @@ class BaseMedia extends Model
     const ITEM_ID = 'item_id';
 
     /**
-     * Идентификатор медия файла
+     * Идентификатор файла
      * @const string
      */
     const MEDIA_ID = 'media_id';
@@ -54,7 +54,7 @@ class BaseMedia extends Model
 
     /**
      * Хэш файла,
-     * необходим для контроля целостности файловой системы и удаления записей по удалению файла
+     * необходим для контроля целостности и удаления записей по удалению файла
      * @const string
      */
     const HASH = 'hash';
