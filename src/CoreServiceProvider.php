@@ -98,7 +98,7 @@ class  CoreServiceProvider extends LaravelServiceProvider
 
             return $manager;
         });
-
+        $this->app->register(AuthServiceProvider::class);
         $this->app->register(CoreEventServiceProvider::class);
     }
 

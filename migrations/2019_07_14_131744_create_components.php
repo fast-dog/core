@@ -25,9 +25,9 @@ class CreateComponents extends Migration
                 $table->tinyInteger(Components::STATE)->default(Components::STATE_NOT_PUBLISHED)->comment('Состояние');
                 $table->timestamps();
                 $table->softDeletes();
-                $table->index(Components::SITE_ID, 'IDX_site_modules_site_id');
+                $table->index(Components::SITE_ID, 'IDX_components_site_id');
             });
-            DB::statement("ALTER TABLE `site_modules` comment 'Реализация контейнеров выводимых в публичной части сайта'");
+            DB::statement("ALTER TABLE `components` comment 'Реализация контейнеров выводимых в публичной части сайта'");
         }
     }
 
