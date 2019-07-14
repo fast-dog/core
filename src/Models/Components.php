@@ -1,20 +1,25 @@
 <?php namespace FastDog\Core\Module;
 
 
+use FastDog\Config\Events\Components\ComponentItemAdminPrepare;
+use FastDog\Core\Events\GetComponentType;
+use FastDog\Core\Interfaces\ModuleInterface;
 use FastDog\Core\Media\Interfaces\MediaInterface;
 use FastDog\Core\Media\Traits\MediaTraits;
 use FastDog\Core\Models\BaseModel;
+use FastDog\Core\Models\DomainManager;
+use FastDog\Core\Models\ModuleManager;
 use FastDog\Core\Properties\Interfases\PropertiesInterface;
 use FastDog\Core\Properties\Traits\PropertiesTrait;
+use FastDog\Core\Store;
+use FastDog\Core\Table\Filters\BaseFilter;
+use FastDog\Core\Table\Filters\Operator\BaseOperator;
 use FastDog\Core\Table\Interfaces\TableModelInterface;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 /**
- * Реализация контейнеров HTML (модулей)
+ * Реализация контейнеров
  *
  *
  * Реализация контейнеров выводящих HTML разметку в публичной части сайта, в зависимости от настраиваемых параметров.
@@ -39,7 +44,7 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
      * Название таблицы
      * @var string $table
      */
-    protected $table = 'system_site_modules';
+    protected $table = 'components';
 
     /**
      * Массив полей автозаполнения
@@ -61,6 +66,7 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
      *</pre>
      *
      * @var array $modules
+     * @deprecated
      */
     public static $modules = [];
 
@@ -89,6 +95,7 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
 
     /**
      * Загрузка всех компонентов в локальное хранилище
+     * @deprecated
      */
     public static function loadAllComponents()
     {
@@ -110,6 +117,7 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
      * @param bool $cache кэширование сегмента html разметки после работы модуля
      * @return string
      * @throws \Throwable
+     * @deprecated
      */
     public static function display($name, $cache = true)
     {
@@ -162,6 +170,7 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
      * @param Components $module
      * @return string
      * @throws \Throwable
+     * @deprecated
      */
     static function getContent(Components $module)
     {
@@ -246,32 +255,13 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
      * Возвращает типы базовых модулей
      *
      * @return mixed
+     *
      */
     public function getModuleType()
     {
-        $paths = array_first(\Config::get('view.paths'));
-        $result = [
-            'id' => 'core',
-            'instance' => __CLASS__,
-            'name' => trans('app.Общие типы'),
-            'items' => [
-                [
-                    'id' => 'html',
-                    'name' => trans('app.Общие типы') . ' :: ' . trans('app.Html содержимое'),
-                    'templates' => $this->getTemplates($paths . '/modules/core/html/*.blade.php'),
-                ],
-                [
-                    'id' => 'breadcrumbs',
-                    'name' => trans('app.Общие типы') . ' :: ' . trans('app.Цепочка навигации'),
-                    'templates' => $this->getTemplates($paths . '/modules/core/breadcrumbs/*.blade.php'),
-                ],
-                [
-                    'id' => 'language',
-                    'name' => trans('app.Общие типы') . ' :: ' . trans('app.Выбор языка'),
-                    'templates' => $this->getTemplates($paths . '/modules/core/language/*.blade.php'),
-                ],
-            ],
-        ];
+        $result = [];
+
+        event(new GetComponentType($result));
 
         return $result;
     }
@@ -284,7 +274,7 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
      * @param string $paths
      * @return array
      */
-    public function getTemplates($paths = '')
+    public static function getTemplates($paths = '')
     {
         $result = [];
 
@@ -409,52 +399,6 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
     }
 
     /**
-     * Создание таблицы базы данных
-     *
-     * Будет создана следующая таблица:
-     *
-     * <pre>
-     * CREATE TABLE site_modules (
-     *          id int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-     *          name varchar(255) NOT NULL COMMENT 'Название',
-     *          site_id char(3) NOT NULL DEFAULT '000' COMMENT 'Код сайта',
-     *          data json NOT NULL COMMENT 'Дополнительные параметры',
-     *          view varchar(50) NOT NULL,
-     *          state tinyint(4) NOT NULL DEFAULT 0 COMMENT 'Состояние',
-     *          created_at timestamp NULL DEFAULT NULL,
-     *          updated_at timestamp NULL DEFAULT NULL,
-     *          deleted_at timestamp NULL DEFAULT NULL,
-     *          PRIMARY KEY (id),
-     *          INDEX IDX_site_modules_site_id (site_id),
-     *          UNIQUE INDEX site_modules_name_unique (name)
-     * )
-     * COMMENT = 'Реализация контейнеров HTML выводимых в публичной части сайта';
-     *
-     * </pre>
-     *
-     * @return void
-     */
-    public static function createDbSchema()
-    {
-        if (!Schema::hasTable('site_modules')) {
-            Schema::create('site_modules', function (Blueprint $table) {
-                $table->increments('id');
-                $table->string(self::NAME)->unique()->comment('Название');
-                $table->char(self::SITE_ID, 3)->default('000')->comment('Код сайта');
-                $table->json(self::DATA)->comment('Дополнительные параметры');
-                $table->string('view', 50);
-                $table->tinyInteger(self::STATE)->default(self::STATE_NOT_PUBLISHED)->comment('Состояние');
-                $table->timestamps();
-                $table->softDeletes();
-                $table->index(self::SITE_ID, 'IDX_site_modules_site_id');
-            });
-            DB::statement("ALTER TABLE `site_modules` comment 'Реализация контейнеров HTML выводимых в публичной части сайта'");
-        }
-
-
-    }
-
-    /**
      * Возвращает имя события вызываемого при обработке данных при передаче на клиент в разделе администрирования
      * @return string
      */
@@ -503,23 +447,13 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
                     BaseFilter::NAME => self::NAME,
                     BaseFilter::PLACEHOLDER => 'Название',
                     BaseFilter::TYPE => BaseFilter::TYPE_TEXT,
-                    BaseFilter::DISPLAY => false,
+                    BaseFilter::DISPLAY => true,
                     BaseFilter::OPERATOR => (new BaseOperator('LIKE', 'LIKE'))->getOperator(),
                 ],
             ],
         ];
 
         return $default;
-    }
-
-    /**
-     * Возвращает ключ доступа к ACL
-     * @param string $type
-     * @return string
-     */
-    public function getAccessKey($type = 'guest'): string
-    {
-        return strtolower(\App\Modules\Config\Config::class) . '::' . DomainManager::getSiteId() . '::' . $type;
     }
 
 
