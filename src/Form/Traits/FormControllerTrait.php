@@ -147,9 +147,9 @@ trait FormControllerTrait
     /**
      * Определение редактируемой модели
      *
-     * @param $item BaseModel
+     * @param $item Model
      */
-    public function setItem(BaseModel $item): void
+    public function setItem(Model $item): void
     {
         $this->item = $item;
     }
