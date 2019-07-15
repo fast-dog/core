@@ -3,7 +3,8 @@
 namespace FastDog\Core\Listeners;
 
 
-use FastDog\Core\Module\Components;
+
+use FastDog\Core\Models\Components;
 use Illuminate\Http\Request;
 use FastDog\Core\Events\GetComponentType as GetComponentTypeEvent;
 

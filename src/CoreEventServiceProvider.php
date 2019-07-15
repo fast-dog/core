@@ -22,6 +22,9 @@ class CoreEventServiceProvider extends ServiceProvider
         'FastDog\Core\Events\JsonPrepare' => [
             'FastDog\Core\Listeners\JsonPrepare',
         ],
+        'FastDog\Core\Events\GetComponentType' => [
+            'FastDog\Core\Listeners\GetComponentType',
+        ],
     ];
 
     /**
