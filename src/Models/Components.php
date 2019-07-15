@@ -283,7 +283,7 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
         $list = DomainManager::getAccessDomainList();
         foreach ($domainsCode as $code) {
             $_code = $code;
-            $currentPath = str_replace('modules', 'public/' . $code . '/modules', $paths);
+            $currentPath = str_replace('/*', '/' . $code . '/*', $paths);
 
             if (isset($list[$code])) {
                 $code = $list[$code]['name'];
