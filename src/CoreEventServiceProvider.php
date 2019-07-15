@@ -2,7 +2,6 @@
 
 namespace FastDog\Core;
 
-use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 /**
@@ -23,7 +22,7 @@ class CoreEventServiceProvider extends ServiceProvider
             'FastDog\Core\Listeners\JsonPrepare',
         ],
         'FastDog\Core\Events\GetComponentType' => [
-            'FastDog\Core\Listeners\GetComponentType',
+            'FastDog\Core\Listeners\GetComponentType',// <-- Добавляем типы в список компонентов
         ],
     ];
 
@@ -33,13 +32,5 @@ class CoreEventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
-
-        //
-    }
-
-    public function register()
-    {
-        //
     }
 }

@@ -7,6 +7,7 @@ namespace FastDog\Core\Listeners;
 use FastDog\Core\Models\Components;
 use Illuminate\Http\Request;
 use FastDog\Core\Events\GetComponentType as GetComponentTypeEvent;
+use Illuminate\Support\Arr;
 
 /**
  * Class GetComponentType
@@ -37,7 +38,7 @@ class GetComponentType
     {
         $data = $event->getData();
 
-        $paths = array_first(\Config::get('view.paths'));
+        $paths = Arr::first(config('view.paths'));
         array_push($data, [
             'id' => 'core',
             'instance' => Components::class,
