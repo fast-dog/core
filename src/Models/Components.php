@@ -1,4 +1,5 @@
 <?php
+
 namespace FastDog\Core\Models;
 
 
@@ -333,31 +334,10 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
         $result = ($isRedis) ? \Cache::tags(['config'])->get($key, null) : \Cache::get($key, null);
 
         $self = new self();
+
         if (null === $result) {
-            $result = [$self->getModuleType()];
+            $result = $self->getModuleType();
 
-            /**
-             * @var $moduleManager ModuleManager
-             */
-            $moduleManager = \App::make(ModuleManager::class);
-
-            $modules = $moduleManager->getModules();
-            /**
-             * @var $module ModuleInterface
-             */
-            foreach ($modules as $module) {
-                $config = $module->getConfig();
-                if (isset($config->source->class)) {
-                    /**
-                     * @var $instance ModuleInterface
-                     */
-                    $instance = $moduleManager->getInstance($config->source->class);
-                    $types = $instance->getModuleType();
-                    if ($types) {
-                        array_push($result, $types);
-                    }
-                }
-            }
             if ($isRedis) {
                 \Cache::tags(['config'])->put($key, $result, config('cache.ttl_config', 5));
             } else {

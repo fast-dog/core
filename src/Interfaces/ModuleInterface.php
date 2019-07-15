@@ -65,6 +65,7 @@ interface ModuleInterface
      * Возвращает возможные типы модулей подключаемых в страницах
      *
      * @return mixed
+     * @deprecated
      */
     public function getModuleType(): array;
 
