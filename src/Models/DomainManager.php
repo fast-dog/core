@@ -202,16 +202,13 @@ class DomainManager extends Domain
     public static function getScopeIds(): array
     {
         $result = [];
-
-        if (config('app.install') === true) {
-            if (self::checkIsDefault()) {
-                $allDomain = self::getAccessDomainList();
-                foreach ($allDomain as $item) {
-                    array_push($result, $item['id']);
-                }
-            } else {
-                $result = ['000', DomainManager::getSiteId()];
+        if (self::checkIsDefault()) {
+            $allDomain = self::getAccessDomainList();
+            foreach ($allDomain as $item) {
+                array_push($result, $item['id']);
             }
+        } else {
+            $result = ['000', DomainManager::getSiteId()];
         }
 
         return $result;
