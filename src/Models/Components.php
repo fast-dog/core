@@ -134,7 +134,7 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
         if (null === $result) {
             $result = [];
             if (is_string($name)) {
-                $item = self::where(function (Builder $query) use ($name) {
+                $item = self::where(function(Builder $query) use ($name) {
                     $query->where(self::NAME, $name);
                     $query->where(self::STATE, self::STATE_PUBLISHED);
                     $query->whereIn(self::SITE_ID, ['000', DomainManager::getSiteId()]);
@@ -143,7 +143,7 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
                     array_push($result, self::getContent($item));
                 }
             } else {
-                $items = self::where(function (Builder $query) use ($name) {
+                $items = self::where(function(Builder $query) use ($name) {
                     $query->whereIn(self::NAME, $name);
                     $query->where(self::STATE, self::STATE_PUBLISHED);
                 })->get();
@@ -187,7 +187,7 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
                             $result = (isset($data['data']->html)) ? $data['data']->html : '';
                             if (isset($data['data']->template)) {
                                 if (isset($data['data']->media)) {
-                                    usort($data['data']->media, function ($a, $b) {
+                                    usort($data['data']->media, function($a, $b) {
                                         return $a->{'sort'} - $b->{'sort'};
                                     });
                                 }
@@ -202,7 +202,7 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
                         case 'core::language':
                             $languages = config('app.languages');
 
-                            collect(DomainManager::getAccessDomainList())->each(function ($domain) use (&$languages) {
+                            collect(DomainManager::getAccessDomainList())->each(function($domain) use (&$languages) {
                                 if (isset($domain['lang'])) {
                                     $name = $languages[$domain['lang']];
                                     $languages[$domain['lang']] = [
@@ -215,7 +215,7 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
                                 }
                             });
 
-                            $languages = array_filter($languages, function ($lang) {
+                            $languages = array_filter($languages, function($lang) {
                                 return ($lang['id'] != DomainManager::getSiteId());
                             });
 
@@ -397,7 +397,7 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
     {
         return [
             [
-                'name' => trans('app.Название'),
+                'name' => trans('config::forms.components.general.fields.name'),
                 'key' => self::NAME,
                 'domain' => true,
                 'callback' => false,

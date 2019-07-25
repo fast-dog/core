@@ -178,20 +178,20 @@ class Domain extends Model implements TableModelInterface, PropertiesInterface
     {
         return [
             [
-                'name' => trans('config::forms.general.name'),
+                'name' => trans('config::forms.domain.general.name'),
                 'key' => Domain::NAME,
                 'domain' => true,
                 'callback' => false,
                 'link' => 'domain_item',
             ],
             [
-                'name' => trans('config::forms.general.url'),
+                'name' => trans('config::forms.domain.general.url'),
                 'key' => Domain::URL,
                 'link' => null,
                 'domain' => false,
             ],
             [
-                'name' => trans('config::forms.general.code') ,
+                'name' => trans('config::forms.domain.general.code') ,
                 'key' => Domain::CODE,
                 'domain' => false,
                 'link' => null,
@@ -219,7 +219,7 @@ class Domain extends Model implements TableModelInterface, PropertiesInterface
             [
                 [
                     BaseFilter::NAME => Domain::NAME,
-                    BaseFilter::PLACEHOLDER => trans('config::forms.general.name'),
+                    BaseFilter::PLACEHOLDER => trans('config::forms.domain.general.name'),
                     BaseFilter::TYPE => BaseFilter::TYPE_TEXT,
                     BaseFilter::DISPLAY => true,
                     BaseFilter::OPERATOR => (new BaseOperator('LIKE', 'LIKE'))->getOperator(),
