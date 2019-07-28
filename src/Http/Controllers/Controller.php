@@ -4,6 +4,7 @@ namespace FastDog\Core\Http\Controllers;
 
 use FastDog\Core\Events\ItemReplicate;
 use FastDog\Core\Events\JsonPrepare;
+use FastDog\Core\Models\BaseModel;
 use FastDog\Core\Models\Domain;
 use FastDog\Core\Models\DomainManager;
 use FastDog\User\Models\MessageManager;
@@ -114,11 +115,11 @@ class Controller extends BaseController
      * Обновление полей модели
      *
      * @param array $data
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param string $model name class
      * @return bool
-     * @deprecated
+     * @throws \Exception
      */
-    protected function updatedModel($data, $model)
+    protected function updatedModel(array $data, string $model): bool
     {
         $updatedData = [];
         switch ($data['field']) {
@@ -136,6 +137,7 @@ class Controller extends BaseController
                     $model::where('id', $data['id'])->first()->delete();
                 } elseif (isset($data['ids']) && count($data['ids'])) {
                     foreach ($data['ids'] as $id) {
+                        /** @var BaseModel $item */
                         $item = $model::where('id', $id)->first();
                         if ($item) {
                             $item->delete();

@@ -215,7 +215,7 @@ trait FormControllerTrait
 
                 BasePropertiesSelectValues::where([
                     BasePropertiesSelectValues::PROPERTY_ID => $request->input(BasePropertiesSelectValues::PROPERTY_ID),
-                ])->get()->each(function (BasePropertiesSelectValues $item) use (&$result) {
+                ])->get()->each(function(BasePropertiesSelectValues $item) use (&$result) {
                     array_push($result['items'], $item->getData());
                 });
                 break;
@@ -281,7 +281,7 @@ trait FormControllerTrait
         $result['items'] = ($model) ? $model->properties() : collect([]);
         if ($item) {
             $result['success'] = true;
-            $result['items']->each(function ($property) use (&$result, $id, $model) {
+            $result['items']->each(function($property) use (&$result, $id, $model) {
                 if ($property['id'] == $id) {
                     $property['model_id'] = $model->getModelId();
                     $result['item'] = $property;
@@ -297,13 +297,21 @@ trait FormControllerTrait
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function postModelUpdateFromTable(Request $request): JsonResponse
     {
         $result = ['success' => false, 'items' => []];
         if (method_exists($this, 'updatedModel')) {
-            $this->updatedModel($request->all(), $this->getModel());
-            $result['success'] = true;
+            try {
+                $result['success'] = $this->updatedModel($request->all(), $this->getModel());
+            } catch (\Exception $e) {
+                return $this->json([
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                    'code' => $e->getCode()
+                ], __METHOD__);
+            }
         }
 
         return $this->json($result, __METHOD__);
