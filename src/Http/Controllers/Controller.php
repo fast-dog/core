@@ -2,10 +2,12 @@
 
 namespace FastDog\Core\Http\Controllers;
 
+use FastDog\Core\Events\ItemReplicate;
 use FastDog\Core\Events\JsonPrepare;
 use FastDog\Core\Models\Domain;
 use FastDog\Core\Models\DomainManager;
 use FastDog\User\Models\MessageManager;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -138,6 +140,16 @@ class Controller extends BaseController
                         if ($item) {
                             $item->delete();
                         }
+                    }
+                }
+                break;
+            case 'replicate':
+                if (isset($data['id']) && $data['id'] > 0) {
+                    /** @var Model $oldModel */
+                    $oldModel = $model::where('id', $data['id'])->first();
+                    if ($oldModel) {
+                        $newModel = $oldModel->replicate();
+                        event(new ItemReplicate($newModel, $oldModel));
                     }
                 }
                 break;
