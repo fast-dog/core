@@ -304,7 +304,7 @@ trait FormControllerTrait
         $result = ['success' => false, 'items' => []];
         if (method_exists($this, 'updatedModel')) {
             try {
-                $result['success'] = $this->updatedModel($request->all(), $this->getModel());
+                $result['success'] = $this->updatedModel($request->all(), get_class($this->getModel()));
             } catch (\Exception $e) {
                 return $this->json([
                     'success' => false,
