@@ -39,6 +39,11 @@ class JsonPrepare
         if (config('app.debug')) {
             $data['_events'][] = __METHOD__;
         }
+
+        if ($this->request->has('_replicate')) {// <-- есть скопированный объект, передаем его на клиент
+            $data['items'] = [];
+            array_push($data['items'], $this->request->get('_replicate'));
+        }
         $event->setData($data);
     }
 }

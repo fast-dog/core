@@ -25,6 +25,7 @@ class CoreEventServiceProvider extends ServiceProvider
             'FastDog\Core\Listeners\GetComponentType',// <-- Добавляем типы в список компонентов
         ],
         'FastDog\Core\Events\ItemReplicate' => [// <-- Копирование моделей
+            'FastDog\Core\Listeners\ItemReplicate'
         ]
     ];
 

@@ -2,6 +2,7 @@
 
 namespace FastDog\Core\Events;
 
+use FastDog\Core\Models\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -13,24 +14,24 @@ use Illuminate\Database\Eloquent\Model;
 class ItemReplicate
 {
     /**
-     * @var Model $item
+     * @var BaseModel $item
      */
     protected $item;
 
     /**
-     * @var Model $oldItem
+     * @var BaseModel $oldItem
      */
     protected $oldItem;
 
 
-    public function __construct(Model $item, Model $oldItem)
+    public function __construct(BaseModel $item, BaseModel $oldItem)
     {
         $this->setItem($item);
         $this->setOldItem($oldItem);
     }
 
     /**
-     * @return Model
+     * @return BaseModel
      */
     public function getItem(): Model
     {
@@ -38,25 +39,25 @@ class ItemReplicate
     }
 
     /**
-     * @param Model $item
+     * @param BaseModel $item
      */
-    public function setItem(Model $item): void
+    public function setItem(BaseModel $item): void
     {
         $this->item = $item;
     }
 
     /**
-     * @return Model
+     * @return BaseModel
      */
-    public function getOldItem(): Model
+    public function getOldItem(): BaseModel
     {
         return $this->oldItem;
     }
 
     /**
-     * @param Model $oldItem
+     * @param BaseModel $oldItem
      */
-    public function setOldItem(Model $oldItem): void
+    public function setOldItem(BaseModel $oldItem): void
     {
         $this->oldItem = $oldItem;
     }
