@@ -25,6 +25,20 @@ interface TableModelInterface
      * ... метод используется для первоначального конфигурирования таблицы,
      * дальнейшие типы, порядок колонок и т.д. будут храниться в обхекте BaseTable
      *
+     * [
+     *      'name' => trans('name'),
+     *      'key' => self::NAME,
+     *      'domain' => true,
+     *      'callback' => false,
+     *      'link' => 'link_item',
+     *      'extra' => true,
+     *      'action' => [
+     *              'edit' => true,
+     *              'replicate' => true,
+     *              'delete' => true,
+     *      ]
+     * ],
+     *
      * @return array
      */
     public function getTableCols(): array;
