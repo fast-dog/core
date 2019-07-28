@@ -144,7 +144,7 @@ class Controller extends BaseController
                         }
                     }
                 }
-                break;
+                return true;
             case 'replicate':
                 if (isset($data['id']) && $data['id'] > 0) {
                     /** @var Model $oldModel */
