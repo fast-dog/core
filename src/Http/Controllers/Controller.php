@@ -149,6 +149,7 @@ class Controller extends BaseController
                     $oldModel = $model::where('id', $data['id'])->first();
                     if ($oldModel) {
                         $newModel = $oldModel->replicate();
+                        $newModel->save();
                         event(new ItemReplicate($newModel, $oldModel));
                     }
                 }
