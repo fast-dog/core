@@ -152,7 +152,7 @@ class Controller extends BaseController
                         event(new ItemReplicate($newModel, $oldModel));
                     }
                 }
-                break;
+                return true;
             default:
                 $updatedData[$data['field']] = $data['value'];
                 break;
