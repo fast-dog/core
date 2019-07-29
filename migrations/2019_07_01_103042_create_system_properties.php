@@ -1,6 +1,7 @@
 <?php
 
 use FastDog\Core\Properties\BaseProperties;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -30,6 +31,8 @@ class CreateSystemProperties extends Migration
             $table->softDeletes();
 
         });
+
+        DB::statement("ALTER TABLE `system_properties` comment 'Справочник дополнительных параметров моделей'");
     }
 
     /**

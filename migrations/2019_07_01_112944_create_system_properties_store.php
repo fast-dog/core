@@ -1,6 +1,7 @@
 <?php
 
 use FastDog\Core\Properties\BasePropertiesStorage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -37,6 +38,9 @@ class CreateSystemPropertiesStore extends Migration
                 ->references('id')
                 ->on('system_properties');
         });
+
+        DB::statement("ALTER TABLE `system_properties` comment 'Справочник значений параметров текстового типа'");
+
     }
 
     /**
