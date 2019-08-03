@@ -19,7 +19,6 @@
     "fideloper/proxy": "^4.0",
     "laravel/framework": "5.8.*",
     "laravel/tinker": "^1.0",
-    "baum/baum": "~1.1",
     "predis/predis": "@dev",
     "jenssegers/date": "^3.2",
     "spatie/db-dumper": "^2.13.2",
