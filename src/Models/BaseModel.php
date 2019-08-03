@@ -28,15 +28,13 @@ class BaseModel extends Model implements BaseModelStateInterface, BaseModelInter
 
     /**
      * Массив полей автозаполнения
-     *
-     * @var array $fillable [self::NAME, self::ALIAS, self::DATA, self::SITE_ID]
+     * @var array $fillable
      */
     protected $fillable = [self::NAME, self::ALIAS, self::DATA, self::SITE_ID, self::TYPE];
 
     /**
      * Массив полей для обработки даты
-     *
-     * @var array $dates ['deleted_at']
+     * @var array $dates
      */
     public $dates = ['deleted_at'];
 
@@ -56,9 +54,9 @@ class BaseModel extends Model implements BaseModelStateInterface, BaseModelInter
     public static function getStatusList(): array
     {
         return [
-            ['id' => self::STATE_PUBLISHED, 'name' => 'Опубликовано'],
-            ['id' => self::STATE_NOT_PUBLISHED, 'name' => 'Не опубликовано'],
-            ['id' => self::STATE_IN_TRASH, 'name' => 'В корзине'],
+            ['id' => self::STATE_PUBLISHED, 'name' => trans('core::interface.states.published')],
+            ['id' => self::STATE_NOT_PUBLISHED, 'name' => trans('core::interface.states.published')],
+            ['id' => self::STATE_IN_TRASH, 'name' => trans('core::interface.states.in_trash')],
         ];
     }
 
@@ -128,6 +126,7 @@ class BaseModel extends Model implements BaseModelStateInterface, BaseModelInter
      * Имена упакованных в json объект данных модели,
      * вызывается при извлечение этих данных в событиях и т.д.
      * @return array
+     * @deprecated
      */
     public function getExtractParameterNames()
     {
@@ -136,7 +135,6 @@ class BaseModel extends Model implements BaseModelStateInterface, BaseModelInter
 
     /**
      * Отношение к домену\сайту
-     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function domain()
@@ -146,7 +144,6 @@ class BaseModel extends Model implements BaseModelStateInterface, BaseModelInter
 
     /**
      * Идентификатор модели
-     *
      * @return mixed
      */
     public function getId()
