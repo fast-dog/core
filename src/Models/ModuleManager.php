@@ -96,8 +96,9 @@ class ModuleManager
         /**
          * @var $moduleManager ModuleManager
          */
-        $moduleManager = \App::make('FastDog\Core\Module\ModuleManager');
+        $moduleManager = \App::make(ModuleManager::class);
         $modules = $moduleManager->getModules();
+
         /**
          * @var $module ModuleInterface
          */

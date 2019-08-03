@@ -92,12 +92,6 @@ class  CoreServiceProvider extends LaravelServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton('ModuleManager', function () {
-            $manager = new ModuleManager();
-            $manager->getModules();
-
-            return $manager;
-        });
         $this->app->register(AuthServiceProvider::class);
         $this->app->register(CoreEventServiceProvider::class);
     }
