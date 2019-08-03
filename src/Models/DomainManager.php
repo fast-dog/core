@@ -201,14 +201,15 @@ class DomainManager extends Domain
      */
     public static function getScopeIds(): array
     {
-        $result = [];
+        $result = ['000' => '000'];
+        $default = DomainManager::getSiteId();
         if (self::checkIsDefault()) {
             $allDomain = self::getAccessDomainList();
             foreach ($allDomain as $item) {
-                array_push($result, $item['id']);
+                $result[$item['id']] = $item['id'];
             }
         } else {
-            $result = ['000', DomainManager::getSiteId()];
+            $result[$default] = $default;
         }
 
         return $result;
