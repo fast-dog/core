@@ -40,7 +40,7 @@ class DomainManager extends Domain
                 $code = (config('cache.default') == 'redis') ? \Cache::tags(['core'])->get($key, null) : \Cache::get($key, null);
 
                 if ($code === null) {
-                    $domains = DomainManager::where(function (Builder $query) use ($root) {
+                    $domains = DomainManager::where(function(Builder $query) use ($root) {
                         $query->where(DomainManager::URL, '=', $root);
                     })->select(DomainManager::URL, DomainManager::CODE, DomainManager::DATA, DomainManager::LANG)->first();
 
@@ -87,11 +87,11 @@ class DomainManager extends Domain
      */
     public static function initView(): void
     {
-        \View::addNamespace('theme', realpath(base_path('resources/views/public/' . self::getSiteId() . '/')));
+        \View::addNamespace('theme', realpath(base_path('resources/views/vendor/fast_dog/' . self::getSiteId() . '/')));
 
         $domainsCode = self::getScopeIds();
         foreach ($domainsCode as $code) {
-            \View::addNamespace('theme#' . $code, realpath(base_path('resources/views/public/' . $code . '/')));
+            \View::addNamespace('theme#' . $code, realpath(base_path('resources/views/vendor/fast_dog/' . $code . '/')));
         }
     }
 
@@ -159,7 +159,7 @@ class DomainManager extends Domain
             $code = '000';
         }
         if ($list) {
-            $result = array_first(array_filter($list, function ($item) use ($code) {
+            $result = array_first(array_filter($list, function($item) use ($code) {
                 return $code == $item['id'];
             }));
 
