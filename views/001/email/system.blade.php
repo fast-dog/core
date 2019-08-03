@@ -6,7 +6,7 @@
  * Time: 15:51
  */
 ?>
-@extends('core::email.layout.main')
+@extends('core::001.email.layout.main')
 
 @section('title')
     <?=$title?>
