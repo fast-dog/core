@@ -92,28 +92,7 @@ class ModuleManager
      */
     public static function moduleList($includeTemplates = true, $reinstall = true)
     {
-        $result = [];
-        /**
-         * @var $moduleManager ModuleManager
-         */
-        $moduleManager = \App::make(ModuleManager::class);
-        $modules = $moduleManager->getModules();
-
-        /**
-         * @var $module ModuleInterface
-         */
-        foreach ($modules as $module) {
-            $info = $module->getModuleInfo($includeTemplates);
-            if (is_array($info)) {
-                foreach ($info as $item) {
-                    if (isset($item['id'])) {
-                        $result[$item['id']] = $item;
-                    }
-                }
-            }
-        }
-
-        return $result;
+        return \App::make(ModuleManager::class)->getModules();
     }
 
 }

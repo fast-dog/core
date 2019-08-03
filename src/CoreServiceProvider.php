@@ -49,15 +49,15 @@ class  CoreServiceProvider extends LaravelServiceProvider
         /**
          * Регистрация дериктив шаблонизатора в помощь верстальщикам
          */
-        \Blade::directive('module', function ($name) {
+        \Blade::directive('module', function($name) {
             return "<?php echo FastDog\Core\\Module\\SiteModules::display($name); ?>";
         });
 
-        \Blade::directive('field', function ($name, $view = '') {
+        \Blade::directive('field', function($name, $view = '') {
             return "<?php echo FastDog\Modules\\Form\\Entity\\FormBase::display($name); ?>";
         });
 
-        \Blade::directive('trans', function ($name, $view = '') {
+        \Blade::directive('trans', function($name, $view = '') {
             $trans_key = view()->shared('trans_key', 'public');
 
             return trans($trans_key . '.' . $name);
@@ -66,7 +66,7 @@ class  CoreServiceProvider extends LaravelServiceProvider
 
         $this->handleViews();
 
-        $this->app->singleton(ModuleManager::class, function () {
+        $this->app->singleton(ModuleManager::class, function() {
             $manager = new ModuleManager();
 
             return $manager;
@@ -139,7 +139,7 @@ class  CoreServiceProvider extends LaravelServiceProvider
 
         $this->publishes([
             __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR =>
-                base_path('resources/views/vendor/fast_dog/' . self::NAME),
+                base_path('resources/views/vendor/fast_dog/'),
         ]);
 
         $this->publishes([
