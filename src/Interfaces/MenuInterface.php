@@ -30,7 +30,7 @@ interface MenuInterface
      *
      * @return array
      */
-    public static function getTypes(): array;
+//    public static function getTypes(): array;
 
     /**
      * Http ссылка
