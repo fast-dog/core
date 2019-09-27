@@ -8,13 +8,13 @@
 
 namespace FastDog\Core\Table\Traits;
 
+use Baum\Node;
+use Carbon\Carbon;
 use FastDog\Core\Models\BaseModel;
 use FastDog\Core\Models\DomainManager;
 use FastDog\Core\Table\BaseTable;
 use FastDog\Core\Table\Filters\BaseFilter;
 use FastDog\Core\Table\Interfaces\TableModelInterface;
-use Baum\Node;
-use Carbon\Carbon;
 use FastDog\User\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -122,7 +122,7 @@ trait TableTrait
                  */
                 $items = $this->getModel()
                     ->select($selectField)
-                    ->where(function (Builder $query) {
+                    ->where(function(Builder $query) {
                         $this->setFilters($query);
                         if (method_exists($this->model, 'setFilters')) {
                             $this->model->setFilters($query);
@@ -130,7 +130,7 @@ trait TableTrait
                     })
                     ->orderBy($this->order, $this->direction)
                     ->paginate(\Request::input('limit', $this->limit));
-                $items->each(function ($item) use ($cols, &$result, $selectField) {
+                $items->each(function($item) use ($cols, &$result, $selectField) {
                     $data = [];
                     if (isset($item->{BaseModel::STATE})) {
                         $data[BaseModel::STATE] = $item->{BaseModel::STATE};
@@ -139,7 +139,7 @@ trait TableTrait
                         $data[BaseModel::DATA] = (is_string($item->{BaseModel::DATA})) ? json_decode($item->{BaseModel::DATA}) : $item->{BaseModel::DATA};
                     }
 
-                    $cols->each(function ($col) use ($item, &$data, &$relations) {
+                    $cols->each(function($col) use ($item, &$data, &$relations) {
                         $col = (array)$col;
                         if (isset($col['related'])) {
                             $related = explode(':', $col['related']);
@@ -190,7 +190,7 @@ trait TableTrait
                 /**
                  * @var $items Collection
                  */
-                $items = $this->getModel()->where(function (Builder $query) {
+                $items = $this->getModel()->where(function(Builder $query) {
                     $query->where('lft', 1);
                     if (!DomainManager::checkIsDefault()) {
                         $query->where(BaseModel::SITE_ID, DomainManager::getSiteId());
@@ -201,7 +201,7 @@ trait TableTrait
                         $items->toHierarchy();
                         break;
                 }
-                $items->each(function (Node $item) use (&$result, $view) {
+                $items->each(function(Node $item) use (&$result, $view) {
                     $data = $item->getData();
                     if (DomainManager::checkIsDefault()) {
                         $data['suffix'] = DomainManager::getDomainSuffix($data[BaseModel::SITE_ID]);
@@ -219,11 +219,11 @@ trait TableTrait
                         default:
                             array_push($result['items'], $data);
                             $item->descendants()
-                                ->where(function (Builder $query) use (&$result) {
+                                ->where(function(Builder $query) use (&$result) {
                                     $this->setFilters($query);
                                 })
                                 ->get()
-                                ->each(function (Node $item) use (&$result) {
+                                ->each(function(Node $item) use (&$result) {
                                     $data = $item->getData();
                                     if (DomainManager::checkIsDefault()) {
                                         $data['suffix'] = DomainManager::getDomainSuffix($data[BaseModel::SITE_ID]);
@@ -301,7 +301,7 @@ trait TableTrait
     protected function getSelectField(Collection $cols): array
     {
         $result = $this->getDefaultSelectFields();
-        $cols->each(function ($col) use (&$result) {
+        $cols->each(function($col) use (&$result) {
             if (!in_array($col->key, ['#'])) {
                 array_push($result, $col->key);
             }
@@ -477,15 +477,12 @@ trait TableTrait
      */
     public function reorderTree(Request $request): JsonResponse
     {
-        $result = ['success' => true];
+        $result = ['success' => false];
 
-        /**
-         * @var $node Menu
-         */
+        /** @var $node Node */
         $node = $this->model->find($request->input('id'));
-        /**
-         * @var $parent Menu
-         */
+
+        /** @var $parent Node */
         $parent = $this->model->find($request->input('parent'));
 
         if ($node === null || $parent === null) {
@@ -494,63 +491,45 @@ trait TableTrait
                 'message' => 'Невозможно выполнить команду',
             ], __METHOD__);
         }
+
         if ($node->{$this->model::SITE_ID} !== $parent->{$this->model::SITE_ID}) {
             return $this->json([
                 'success' => false,
                 'message' => 'Изменить сайт привязки нельзя.',
             ], __METHOD__);
         }
+
         if ($node && $parent) {
-            $oldPosition = [];
-            $children = $parent->descendants()->limitDepth(1)->get();
-            if ($children) {
-                foreach ($children as $child) {
-                    array_push($oldPosition, $child->id);
-                }
-                $position = ($request->input('position'));
-                switch ($request->input('move')) {
-                    case 'up':
-                        if (isset($oldPosition[$position])) {
-                            $prevId = $oldPosition[$position];
-                            if ($prevId == $node->id) {
-                                $prevId = $oldPosition[$position];
-                            }
-                            $prevNode = $this->model->find($prevId);
-                            $node->moveToLeftOf($prevNode);
-                            $node->setDepth();
-                            $result = [
-                                'success' => true, 'prev' => $prevNode->id,
-                                'method' => 'moveToLeftOf'];
-                        }
-                        break;
-                    case 'down':
-                        if (isset($oldPosition[$position])) {
-                            $prevId = $oldPosition[$position];
-                            if ($prevId == $node->id) {
-                                $prevId = $oldPosition[$position];
-                            }
-                            $prevNode = $this->model->find($prevId);
-                            $node->moveToRightOf($prevNode);
-                            $node->setDepth();
-                            $result = [
-                                'success' => true, 'prev' => $prevNode->id,
-                                'method' => 'moveToRightOf',
-                            ];
-                        }
-                        break;
-                    case 'insert':
-                        $parentNode = $this->model->find($request->input('parent'));
-                        if ($parentNode) {
-                            $node->makeLastChildOf($parentNode);
-                            $node->setDepth();
-                            $result = [
-                                'success' => true, 'parent' => $parentNode->id,
-                                'method' => 'makeLastChildOf',
-                            ];
-                        }
-                        break;
-                }
+            switch ($request->input('move')) {
+                case 'up':
+                    $node->moveToLeftOf($parent);
+                    $node->setDepth();
+                    $result = [
+                        'success' => true,
+                        'prev' => $parent->id,
+                        'method' => 'moveToLeftOf'
+                    ];
+                    break;
+                case 'down':
+                    $node->moveToRightOf($parent);
+                    $node->setDepth();
+                    $result = [
+                        'success' => true,
+                        'prev' => $parent->id,
+                        'method' => 'moveToRightOf',
+                    ];
+                    break;
+                case 'insert':
+                    $node->makeLastChildOf($parent);
+                    $node->setDepth();
+                    $result = [
+                        'success' => true,
+                        'parent' => $parent->id,
+                        'method' => 'makeLastChildOf',
+                    ];
+                    break;
             }
+
         }
 
         return $this->json($result, __METHOD__);
