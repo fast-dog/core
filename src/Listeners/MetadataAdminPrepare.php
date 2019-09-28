@@ -1,4 +1,5 @@
 <?php
+
 namespace FastDog\Core\Listeners;
 
 use FastDog\Core\Interfaces\AdminPrepareEventInterface;
@@ -35,6 +36,10 @@ class MetadataAdminPrepare
     {
 //        $item = $event->getItem();
         $data = $event->getData();
+
+        if (!isset($data['data'])) {
+            $data['data'] = new \StdClass();
+        }
 
         if ($data['data'] === null || $data['data'] == []) {
             $data['data'] = new \StdClass();
