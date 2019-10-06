@@ -26,6 +26,9 @@ class CoreEventServiceProvider extends ServiceProvider
         ],
         'FastDog\Core\Events\ItemReplicate' => [// <-- Копирование моделей
             'FastDog\Core\Listeners\ItemReplicate'
+        ],
+        'FastDog\Core\Events\FormBuilder' => [// <-- Настройка форм
+            'FastDog\Core\Listeners\FormBuilder'
         ]
     ];
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace FastDog\Core\Events;
 
 use FastDog\Core\Interfaces\AdminPrepareEventInterface;
@@ -12,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @version 0.1.0
  * @author Андрей Мартынов <d.g.dev482@gmail.com>
  */
-class JsonPrepare implements AdminPrepareEventInterface
+class FormBuilder implements AdminPrepareEventInterface
 {
     /**
      * @var array $data
@@ -20,7 +19,7 @@ class JsonPrepare implements AdminPrepareEventInterface
     protected $data = [];
 
     /**
-     * @param array $data ['success' => true, 'items' => [], 'cols' => []]
+     * @param array $data
      */
     public function __construct(array &$data)
     {
