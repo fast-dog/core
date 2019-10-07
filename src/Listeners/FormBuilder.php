@@ -66,10 +66,15 @@ class FormBuilder
         }
 
         $form_data = $form->getData();
+
         if (isset($form_data[BaseForm::DATA]->preset) && $form_data[BaseForm::DATA]->preset !== []) {
             $result['form'] = $form_data[BaseForm::DATA]->preset;
-            $event->setResult($result);
         }
+
+        $result['form']['form_builder'] = [
+            'id' => $form->id,
+        ];
+        $event->setResult($result);
 
         if (config('app.debug')) {
             $data['_events'][] = __METHOD__;
