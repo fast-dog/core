@@ -34,4 +34,17 @@ class BaseForm extends BaseModel
      * @var array $fillable
      */
     public $fillable = [self::NAME, self::MODEL, self::USER_ID, self::DATA];
+
+    /**
+     * @return array
+     */
+    public function getData(): array
+    {
+        return [
+            self::NAME => $this->{self::NAME},
+            self::MODEL => $this->{self::MODEL},
+            self::USER_ID => $this->{self::USER_ID},
+            self::DATA => json_decode($this->{self::DATA}),
+        ];
+    }
 }
