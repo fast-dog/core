@@ -50,7 +50,7 @@ class FormBuilder
         $form = BaseForm::where([
             BaseForm::MODEL => $item->getModelId(),
             BaseForm::USER_ID => 0,//<-- all users
-        ])->firs();
+        ])->first();
 
         if (!$form) {
             /** @var BaseForm $form */

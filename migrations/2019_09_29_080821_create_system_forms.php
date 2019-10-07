@@ -22,6 +22,7 @@ class CreateSystemForms extends Migration
                 $table->integer('user_id')->nullable()->comment('Идентификатор пользователя');
                 $table->json('data')->comment('Дополнительные параметры');
                 $table->timestamps();
+                $table->softDeletes();
             });
             DB::statement("ALTER TABLE `system_forms` comment 'Формы в разделе администрирования'");
         }
