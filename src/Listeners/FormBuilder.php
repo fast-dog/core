@@ -41,8 +41,10 @@ class FormBuilder
 
         /** @var BaseModel $item */
         $item = $event->getItem();
+
         /** @var array $data */
         $data = $event->getData();
+
         /** @var array $result */
         $result = $event->getResult();
 
@@ -53,6 +55,13 @@ class FormBuilder
         ])->first();
 
         if (!$form) {
+
+            foreach ($result['form']['tabs'] as &$tabs) {
+                foreach ($tabs->fields as &$field) {
+                    $field['edit_id'] = md5(implode('|', $field));
+                }
+            }
+
             /** @var BaseForm $form */
             $form = BaseForm::create([
                 BaseForm::NAME => get_class($item),
