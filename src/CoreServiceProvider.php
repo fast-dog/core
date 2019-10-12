@@ -3,6 +3,7 @@
 namespace FastDog\Core;
 
 
+use FastDog\Core\Models\Cache;
 use FastDog\Core\Models\DomainManager;
 use FastDog\Core\Models\ModuleManager;
 
@@ -18,6 +19,9 @@ use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
  */
 class  CoreServiceProvider extends LaravelServiceProvider
 {
+    /**
+     * @const string
+     */
     const NAME = 'core';
 
     /**
@@ -70,6 +74,12 @@ class  CoreServiceProvider extends LaravelServiceProvider
             $manager = new ModuleManager();
 
             return $manager;
+        });
+
+        $this->app->singleton(Cache::class, function() {
+            $cache = app()->make(Cache::class);
+
+            return $cache;
         });
     }
 
