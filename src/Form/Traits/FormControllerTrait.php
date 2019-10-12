@@ -215,7 +215,7 @@ trait FormControllerTrait
 
                 BasePropertiesSelectValues::where([
                     BasePropertiesSelectValues::PROPERTY_ID => $request->input(BasePropertiesSelectValues::PROPERTY_ID),
-                ])->get()->each(function(BasePropertiesSelectValues $item) use (&$result) {
+                ])->get()->each(function (BasePropertiesSelectValues $item) use (&$result) {
                     array_push($result['items'], $item->getData());
                 });
                 break;
@@ -243,8 +243,8 @@ trait FormControllerTrait
             }
         }
 
-        if ($model->getTable() !== '') {
-            $model = $model->find($request->input('item_id'));
+        if ($model->getTable() !== '' && $request->input('item_id', null)) {
+            $model = $model->find($request->input('item_id', null));
         }
 
         $id = (int)$request->input('id');
@@ -281,7 +281,7 @@ trait FormControllerTrait
         $result['items'] = ($model) ? $model->properties() : collect([]);
         if ($item) {
             $result['success'] = true;
-            $result['items']->each(function($property) use (&$result, $id, $model) {
+            $result['items']->each(function ($property) use (&$result, $id, $model) {
                 if ($property['id'] == $id) {
                     $property['model_id'] = $model->getModelId();
                     $result['item'] = $property;
@@ -309,7 +309,7 @@ trait FormControllerTrait
                 return $this->json([
                     'success' => false,
                     'message' => $e->getMessage(),
-                    'code' => $e->getCode()
+                    'code' => $e->getCode(),
                 ], __METHOD__);
             }
         }
