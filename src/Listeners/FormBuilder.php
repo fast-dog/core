@@ -6,7 +6,10 @@ use FastDog\Core\Form\BaseForm;
 use FastDog\Core\Interfaces\AdminPrepareEventInterface;
 use FastDog\Core\Models\BaseModel;
 use FastDog\Core\Models\ModuleManager;
+use FastDog\Core\Properties\BaseProperties;
+use FastDog\Core\Properties\Interfases\PropertiesInterface;
 use Illuminate\Http\Request;
+use FastDog\Core\Models\FormFieldTypes;
 
 /**
  * Class AdminPrepare
@@ -57,8 +60,51 @@ class FormBuilder
         if (!$form) {
 
             foreach ($result['form']['tabs'] as &$tabs) {
-                foreach ($tabs->fields as &$field) {
-                    $field['edit_id'] = md5(implode('|', $field));
+                $new_fielsd = [];
+                foreach ($tabs->fields as $k => &$field) {
+
+                    $field['edit_id'] = md5($field['type'] . $k . microtime(true));
+
+                    switch ($field['type']) {
+                        case FormFieldTypes::TYPE_COMPONENT_SAMPLE_PROPERTIES:
+
+                            if (class_exists($field['model'])) {
+                                (new $field['model'])->properties()->each(function ($_field) use (&$new_fielsd) {
+
+                                    $_field['edit_id'] = md5($_field['alias'] . count($new_fielsd));
+                                    $_field['label'] = $_field['name'];
+
+                                    switch ($_field['type']->id) {
+                                        case BaseProperties::TYPE_STRING:
+                                        case BaseProperties::TYPE_NUMBER:
+                                            $_field['type'] = FormFieldTypes::TYPE_TEXT;
+                                            array_push($new_fielsd, $_field);
+                                            break;
+                                        case BaseProperties::TYPE_MAP:
+                                            $_field['type'] = 'map';// TODO: add type map!
+                                            array_push($new_fielsd, $_field);
+                                            break;
+                                        case BaseProperties::TYPE_FILE:
+                                            $_field['type'] = FormFieldTypes::TYPE_MEDIA;
+                                            array_push($new_fielsd, $_field);
+                                            break;
+                                        case BaseProperties::TYPE_SELECT:
+                                            $_field['type'] = FormFieldTypes::TYPE_SELECT;
+                                            array_push($new_fielsd, $_field);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                });
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                if ($new_fielsd !== []) {
+                    $tabs->fields = $new_fielsd;
                 }
             }
 
