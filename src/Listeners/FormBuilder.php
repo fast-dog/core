@@ -74,6 +74,10 @@ class FormBuilder
                                     $_field['edit_id'] = md5($_field['alias'] . count($new_fielsd));
                                     $_field['label'] = $_field['name'];
 
+                                    if (is_array($_field['type'])) {
+                                        $_field['type'] = (object)$_field['type'];
+                                    }
+
                                     switch ($_field['type']->id) {
                                         case BaseProperties::TYPE_STRING:
                                         case BaseProperties::TYPE_NUMBER:
