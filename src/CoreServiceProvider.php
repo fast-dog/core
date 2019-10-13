@@ -77,7 +77,7 @@ class  CoreServiceProvider extends LaravelServiceProvider
         });
 
         $this->app->singleton(Cache::class, function() {
-            $cache = app()->make(Cache::class);
+            $cache = new Cache();
 
             return $cache;
         });

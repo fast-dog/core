@@ -15,11 +15,10 @@ class Cache
 
     /**
      * Cache constructor.
-     * @param \Illuminate\Support\Facades\Cache $cache
      */
-    public function __construct(\Illuminate\Support\Facades\Cache $cache)
+    public function __construct()
     {
-        $this->cache = $cache;
+        $this->cache = new \Cache();
     }
 
     /**
