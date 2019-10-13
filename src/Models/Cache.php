@@ -31,14 +31,20 @@ class Cache
     public function get($key, $callback, $tag = ['all'])
     {
         $isRedis = config('cache.default') == 'redis';
+        $result = null;
 
-        $result = ($isRedis) ? $this->cache->tags($tag)->get($key, null) : $this->cache->get($key, null);
+        if ($key && config('cache.enabled')) {// если передан ключ и включено кэширование, пытаемся получить кеш
+            $result = ($isRedis) ? $this->cache->tags($tag)->get($key, null) : $this->cache->get($key, null);
+        }
+
         if (null === $result) {
-            $result = $callback();
-            if ($isRedis) {
-                $this->cache->tags($tag)->put($key, $result, config('cache.ttl_core', 5));
-            } else {
-                $this->cache->put($key, $result, config('cache.ttl_core', 5));
+            $result = $callback();// кэша нет, выполняем замыкание
+            if ($key && config('cache.enabled')) {
+                if ($isRedis) {
+                    $this->cache->tags($tag)->put($key, $result, config('cache.ttl_core', 5));
+                } else {
+                    $this->cache->put($key, $result, config('cache.ttl_core', 5));
+                }
             }
         }
 
