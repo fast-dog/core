@@ -41,6 +41,7 @@ class BaseForm extends BaseModel
     public function getData(): array
     {
         return [
+            'id' => $this->id,
             self::NAME => $this->{self::NAME},
             self::MODEL => $this->{self::MODEL},
             self::USER_ID => $this->{self::USER_ID},
