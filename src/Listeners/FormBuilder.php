@@ -51,6 +51,8 @@ class FormBuilder
         /** @var array $result */
         $result = $event->getResult();
 
+        $result['form']['is_preset'] = 'N';// флаг конструктора формы
+
         /** @var BaseForm $form */
         $form = BaseForm::where([
             BaseForm::MODEL => $item->getModelId(),
@@ -58,16 +60,16 @@ class FormBuilder
         ])->first();
 
         if (!$form) {
-
             foreach ($result['form']['tabs'] as &$tabs) {
                 $new_fielsd = [];
                 foreach ($tabs->fields as $k => &$field) {
-
                     $field['edit_id'] = md5($field['type'] . $k . microtime(true));
 
+                    /*
+                     * Определение типов полей для размещения в конструкторе
+                     */
                     switch ($field['type']) {
                         case FormFieldTypes::TYPE_COMPONENT_SAMPLE_PROPERTIES:
-
                             if (class_exists($field['model'])) {
                                 (new $field['model'])->properties()->each(function ($_field) use (&$new_fielsd) {
 
@@ -108,7 +110,7 @@ class FormBuilder
                 }
 
                 if ($new_fielsd !== []) {
-                    $tabs->fields = $new_fielsd;
+                    $tabs->edit_fields = $new_fielsd;
                 }
             }
 
@@ -127,10 +129,28 @@ class FormBuilder
         $form_data = $form->getData();
 
         if (isset($form_data[BaseForm::DATA]->preset) && $form_data[BaseForm::DATA]->preset !== []) {
-            $result['form'] = $form_data[BaseForm::DATA]->preset;
+            $result['form'] = (array)$form_data[BaseForm::DATA]->form;
+            $preset = collect($form_data[BaseForm::DATA]->preset);// конфигурация полей заданных в конструкторе
+
+            foreach ($result['form']['tabs'] as $k => &$fieldSet) {
+                $presetFields = $preset->get($fieldSet->id);
+                if ($presetFields) {
+                    $fieldSet->fields = [
+                        'left' => $presetFields->left,
+                        'right' => $presetFields->right,
+                        'center' => $presetFields->center,
+                        'center_second' => $presetFields->center_second,
+                    ];
+                    $fieldSet->side = (isset($presetFields->side)) ? $presetFields->side : [];
+                } else {
+                    unset($result['form']['tabs'][$k]);
+                }
+            }
+
+            $result['form']['is_preset'] = 'Y';
         }
 
-        $result['form']['form_builder'] = [
+        $result['form']['form_builder'] = [// идентификатор редактируемой формы
             'id' => $form->id,
         ];
         $event->setResult($result);
