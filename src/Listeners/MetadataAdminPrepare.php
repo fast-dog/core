@@ -41,6 +41,10 @@ class MetadataAdminPrepare
             $data['data'] = new \StdClass();
         }
 
+        if (is_string($data['data'])) {
+            $data['data'] = json_decode($data['data']);
+        }
+
         if ($data['data'] === null || $data['data'] == []) {
             $data['data'] = new \StdClass();
         }
