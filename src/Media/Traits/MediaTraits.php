@@ -3,7 +3,9 @@
 namespace FastDog\Core\Media\Traits;
 
 use FastDog\Core\Media\BaseMedia;
+use FastDog\Core\Models\DomainManager;
 use FastDog\Core\Models\ModuleManager;
+use FastDog\Media\Models\GalleryItem;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
@@ -54,8 +56,9 @@ trait MediaTraits
          *
          * @var $moduleManager ModuleManager
          */
-        $moduleManager = \App::make(ModuleManager::class);
-        if ($moduleManager->hasModule('App\Modules\Media\Media')) {
+        $moduleManager = app()->make(ModuleManager::class);
+
+        if ($moduleManager->hasModule('media')) {
             $removeMediaItemsHash = [];
 
             $media->each(function ($item) use ($existMediaItems, &$removeMediaItemsHash) {
