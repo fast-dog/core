@@ -1,12 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: dg
- * Date: 08.02.2017
- * Time: 15:51
- */
-?>
-@extends('core::001.email.layout.main')
+@extends('vendor.fast_dog.000.core.email.layout.main')
 
 @section('title')
     <?=$title?>
