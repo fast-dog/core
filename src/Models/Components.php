@@ -329,23 +329,11 @@ class Components extends BaseModel implements TableModelInterface, PropertiesInt
      */
     public static function getInstallModules()
     {
-        $key = __METHOD__ . '::' . DomainManager::getSiteId();
-        $isRedis = config('cache.default') == 'redis';
-        $result = ($isRedis) ? \Cache::tags(['config'])->get($key, null) : \Cache::get($key, null);
+        return app()->make(Cache::class)->get(__METHOD__ . '::' . DomainManager::getSiteId(), function() {
 
-        $self = new self();
+            return (new Components())->getModuleType();
 
-        if (null === $result) {
-            $result = $self->getModuleType();
-
-            if ($isRedis) {
-                \Cache::tags(['config'])->put($key, $result, config('cache.ttl_config', 5));
-            } else {
-                \Cache::put($key, $result, config('cache.ttl_config', 5));
-            }
-        }
-
-        return $result;
+        }, ['config']);
     }
 
     /**
