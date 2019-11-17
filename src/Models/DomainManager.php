@@ -31,33 +31,32 @@ class DomainManager extends Domain
     public static function getSiteId($root = null): string
     {
         $code = request()->input('_site_id', '000');
-        if ($code !== '000') {
-            $root = ($root !== null) ? $root : request()->root();
 
-            /** @var Cache $cache */
-            $cache = app()->make(Cache::class);
+        $root = ($root !== null) ? $root : request()->root();
 
-            if ($code === '000') {
-                $domain = $cache->get('site-' . $root, function() use ($root) {
-                    $domain = DomainManager::where(function(Builder $query) use ($root) {
-                        $query->where(DomainManager::URL, '=', $root);
-                    })->select(DomainManager::URL, DomainManager::CODE, DomainManager::DATA, DomainManager::LANG)
-                        ->first();
-                    return $domain;
-                }, ['core']);
+        /** @var Cache $cache */
+        $cache = app()->make(Cache::class);
 
-                if ($domain) {
-                    request()->merge([
-                        '_site_id' => $domain->{DomainManager::CODE},
-                        'lang' => $domain->{DomainManager::LANG},
-                    ]);
+        if ($code === '000') {
+            $domain = $cache->get('site-' . $root, function() use ($root) {
+                $domain = DomainManager::where(function(Builder $query) use ($root) {
+                    $query->where(DomainManager::URL, '=', $root);
+                })->select(DomainManager::URL, DomainManager::CODE, DomainManager::DATA, DomainManager::LANG)
+                    ->first();
+                return $domain;
+            }, ['core']);
+
+            if ($domain) {
+                request()->merge([
+                    '_site_id' => $domain->{DomainManager::CODE},
+                    'lang' => $domain->{DomainManager::LANG},
+                ]);
+                if ($domain->{DomainManager::LANG} !== null) {
+                    app()->setLocale($domain->{DomainManager::LANG});
                 }
             }
-
-            if ($domain->{DomainManager::LANG} !== null) {
-                app()->setLocale($domain->{DomainManager::LANG});
-            }
         }
+
 
         return (!$code) ? '000' : $code;
     }
