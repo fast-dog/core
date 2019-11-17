@@ -87,11 +87,12 @@ class DomainManager extends Domain
      */
     public static function initView(): void
     {
-        \View::addNamespace('theme', realpath(base_path('resources/views/vendor/fast_dog/' . self::getSiteId() . '/')));
+        //шаблоны по умолчанию, заглушки и т.д.
+        view()->addNamespace('theme', realpath(base_path(config('view.domain_dir', 'resources/views/vendor/fast_dog') . '/000/')));
 
-        $domainsCode = self::getScopeIds();
-        foreach ($domainsCode as $code) {
-            \View::addNamespace('theme#' . $code, realpath(base_path('resources/views/vendor/fast_dog/' . $code . '/')));
+        foreach (self::getScopeIds() as $code) {
+            // шаблоны по доменам
+            view()->addNamespace('theme#' . $code, realpath(base_path(config('view.domain_dir', 'resources/views/vendor/fast_dog') . '/' . $code . '/')));
         }
     }
 
