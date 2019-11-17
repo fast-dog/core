@@ -31,52 +31,33 @@ class DomainManager extends Domain
     public static function getSiteId($root = null): string
     {
         $code = request()->input('_site_id', '000');
-
-        try {
+        if ($code !== '000') {
             $root = ($root !== null) ? $root : request()->root();
-            $key = md5('site-' . $root);
+
+            /** @var Cache $cache */
+            $cache = app()->make(Cache::class);
 
             if ($code === '000') {
-                $code = (config('cache.default') == 'redis') ? \Cache::tags(['core'])->get($key, null) : \Cache::get($key, null);
-
-                if ($code === null) {
-                    $domains = DomainManager::where(function(Builder $query) use ($root) {
+                $domain = $cache->get('site-' . $root, function() use ($root) {
+                    $domain = DomainManager::where(function(Builder $query) use ($root) {
                         $query->where(DomainManager::URL, '=', $root);
-                    })->select(DomainManager::URL, DomainManager::CODE, DomainManager::DATA, DomainManager::LANG)->first();
+                    })->select(DomainManager::URL, DomainManager::CODE, DomainManager::DATA, DomainManager::LANG)
+                        ->first();
+                    return $domain;
+                }, ['core']);
 
-                    if (null !== $domains) {
-                        $code = $domains->{DomainManager::CODE};
-                        \Request::merge([
-                            '_site_id' => $domains->{DomainManager::CODE},
-                            'lang' => $domains->{DomainManager::LANG},
-                        ]);
-                    }
-                    if (config('cache.default') == 'redis') {
-                        \Cache::tags(['core'])->put($key, $code, config('cache.ttl_core', 30));
-
-                        if (isset($domains->{DomainManager::LANG})) {
-                            \Cache::tags(['core'])->put($key . '-lang', $domains->{DomainManager::LANG}, config('cache.ttl_core', 30));
-                        }
-                    } else {
-                        \Cache::put($key, $code, config('cache.ttl_core', 30));
-                        if (isset($domains->{DomainManager::LANG})) {
-                            \Cache::put($key . '-lang', $domains->{DomainManager::LANG}, config('cache.ttl_core', 30));
-                        }
-                    }
-                } else {
-                    \Request::merge([
-                        '_site_id' => $code,
+                if ($domain) {
+                    request()->merge([
+                        '_site_id' => $domain->{DomainManager::CODE},
+                        'lang' => $domain->{DomainManager::LANG},
                     ]);
                 }
             }
-            $lang = (config('cache.default') == 'redis') ? \Cache::tags(['core'])->get($key . '-lang', null) : \Cache::get($key . '-lang', null);
-            if ($lang !== null) {
-                \App::setLocale($lang);
+
+            if ($domain->{DomainManager::LANG} !== null) {
+                app()->setLocale($domain->{DomainManager::LANG});
             }
-        } catch (\Exception $exception) {
-
         }
-
 
         return (!$code) ? '000' : $code;
     }
