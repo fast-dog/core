@@ -1,4 +1,5 @@
 <?php
+
 namespace FastDog\Core\Listeners;
 
 use FastDog\Core\Interfaces\AdminPrepareEventInterface;
@@ -33,14 +34,14 @@ class ModelBeforeSave
     /**
      * @param AdminPrepareEventInterface $event
      */
-    public function handle(AdminPrepareEventInterface $event)
+    public function handle($event)
     {
         /**
          * @var $model BaseModel
          */
         $model = $event->getItem();
         $data = $event->getData();
-        $data['data'] = (is_string($data['data'])) ?(object) json_decode($data['data']) : (object)$data['data'];
+        $data['data'] = (is_string($data['data'])) ? (object)json_decode($data['data']) : (object)$data['data'];
 
         $packParameters = $model->getExtractParameterNames();
         $allData = $this->request->all();
