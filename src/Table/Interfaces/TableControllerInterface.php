@@ -22,6 +22,7 @@ interface TableControllerInterface
     /**
      * @param Request $request
      * @return JsonResponse
+     * @deprecated
      */
     public function items(Request $request): JsonResponse;
 
