@@ -6,6 +6,9 @@ use FastDog\Core\Models\BaseModel;
 use Illuminate\Http\Request;
 
 /**
+ * Упаковывает данные с отдельных полей в json объект data,
+ * в модели должен быть определен метод getExtractParameterNames
+ *
  *
  * @package FastDog\Core\Listeners
  * @version 0.2.0

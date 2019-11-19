@@ -38,7 +38,8 @@ class AdminItemPrepare
         /**
          * @var $moduleManager ModuleManager
          */
-        $moduleManager = \App::make(ModuleManager::class);
+        $moduleManager = app()->make(ModuleManager::class);
+        /** @var BaseModel $item */
         $item = $event->getItem();
         $data = $event->getData();
         $data['created_at'] = ($item->created_at !== null) ? $item->created_at->format('Y-m-d') : '';
@@ -46,10 +47,13 @@ class AdminItemPrepare
         $data['published_at'] = ($item->published_at !== null) ? $item->published_at->format('Y-m-d') : '';
         $data['files_module'] = ($moduleManager->hasModule('FastDog\Modules\Media\Media')) ? 'Y' : 'N';
 
+        if (is_string(['data'])) {
+            $data ['data'] = json_decode($data['data']);
+        }
         //Доступ
         if (isset($data[BaseModel::SITE_ID])) {
             $data[BaseModel::SITE_ID] = array_first(array_filter(DomainManager::getAccessDomainList(),
-                function ($element) use ($data) {
+                function($element) use ($data) {
                     return $element['id'] == $data[BaseModel::SITE_ID];
                 }));
 
@@ -57,9 +61,18 @@ class AdminItemPrepare
 
         //Состояние
         if (isset($data[BaseModel::STATE])) {
-            $data[BaseModel::STATE] = array_first(array_filter(BaseModel::getStatusList(), function ($element) use ($data) {
+            $data[BaseModel::STATE] = array_first(array_filter(BaseModel::getStatusList(), function($element) use ($data) {
                 return ($element['id'] == $data[BaseModel::STATE]);
             }));
+        }
+
+        //извлечение дополнительных параметров из json поля data для редактирования в форме
+        if (method_exists($item, 'getExtractParameterNames')) {
+            foreach ($item->getExtractParameterNames() as $id => $extractParameterName) {
+                if (isset($data['data'][$id])) {
+                    $item->{$id} = $data['data'][$id];
+                }
+            }
         }
 
 

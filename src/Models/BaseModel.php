@@ -25,19 +25,19 @@ use Illuminate\Support\Str;
 class BaseModel extends Model implements BaseModelStateInterface, BaseModelInterface
 {
     use SoftDeletes, StateTrait, PropertiesTrait;
-    
+
     /**
      * Массив полей автозаполнения
      * @var array $fillable
      */
     protected $fillable = [self::NAME, self::ALIAS, self::DATA, self::SITE_ID, self::TYPE];
-    
+
     /**
      * Массив полей для обработки даты
      * @var array $dates
      */
     public $dates = ['deleted_at'];
-    
+
     /**
      * Возможные состояния модели
      *
@@ -59,8 +59,8 @@ class BaseModel extends Model implements BaseModelStateInterface, BaseModelInter
             ['id' => self::STATE_IN_TRASH, 'name' => trans('core::interface.states.in_trash')],
         ];
     }
-    
-    
+
+
     /**
      * Медиа материалы
      *
@@ -72,7 +72,7 @@ class BaseModel extends Model implements BaseModelStateInterface, BaseModelInter
     {
         return collect([]);
     }
-    
+
     /**
      * Возвращает общую информацию о текущей модели
      *
@@ -91,8 +91,8 @@ class BaseModel extends Model implements BaseModelStateInterface, BaseModelInter
             self::DELETED_AT => $this->{self::DELETED_AT},
         ];
     }
-    
-    
+
+
     /**
      * Возвращает имя события вызываемого при обработке данных при передаче на клиент
      * @return string
@@ -101,8 +101,8 @@ class BaseModel extends Model implements BaseModelStateInterface, BaseModelInter
     {
         return 'Event' . Str::studly(class_basename($this)) . 'Prepared';
     }
-    
-    
+
+
     /**
      * Возвращает имя события вызываемого при обработке данных при передаче на клиент в разделе администрирования
      * @return string
@@ -111,28 +111,29 @@ class BaseModel extends Model implements BaseModelStateInterface, BaseModelInter
     {
         return Str::studly(class_basename($this)) . 'AdminPrepare';
     }
-    
+
     /**
      * Дополнительный фильтр таблицы
-     * @param  Builder  $query
+     * @param Builder $query
      * @return Builder
      */
     public function setFilters(Builder $query): Builder
     {
         return $query;
     }
-    
+
     /**
      * Имена упакованных в json объект данных модели,
-     * вызывается при извлечение этих данных в событиях и т.д.
+     * вызывается при извлечение/упаковки этих данных в объект data,
+     * используется в FastDog\Core\Listeners\ModelBeforeSave
+     *
      * @return array
-     * @deprecated
      */
-    public function getExtractParameterNames()
+    public function getExtractParameterNames(): array
     {
         return [];
     }
-    
+
     /**
      * Отношение к домену\сайту
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -141,7 +142,7 @@ class BaseModel extends Model implements BaseModelStateInterface, BaseModelInter
     {
         return $this->hasOne(Domain::class, Domain::CODE, self::SITE_ID);
     }
-    
+
     /**
      * Идентификатор модели
      * @return mixed
@@ -150,7 +151,7 @@ class BaseModel extends Model implements BaseModelStateInterface, BaseModelInter
     {
         return $this->id;
     }
-    
+
     /**
      * Маршрут по умолчанию
      * @return string
