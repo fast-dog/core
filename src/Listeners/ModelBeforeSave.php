@@ -44,16 +44,13 @@ class ModelBeforeSave
         $data['data'] = (is_string($data['data'])) ? (object)json_decode($data['data']) : (object)$data['data'];
 
         $packParameters = $model->getExtractParameterNames();
+
         $allData = $this->request->all();
-        foreach ($packParameters as $name) {
-            if (isset($allData[$name])) {
-                $data['data']->{$name} = $allData[$name];
-            }
+        foreach ($packParameters as $id => $name) {
+            $data['data']->{$id} = $this->request->input($name);
         }
         $data['data'] = json_encode($data['data']);
-        if (config('app.debug')) {
-            $data['_events'][] = __METHOD__;
-        }
+
         $event->setData($data);
     }
 }
