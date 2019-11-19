@@ -69,8 +69,8 @@ class AdminItemPrepare
         //извлечение дополнительных параметров из json поля data для редактирования в форме
         if (method_exists($item, 'getExtractParameterNames')) {
             foreach ($item->getExtractParameterNames() as $id => $extractParameterName) {
-                if (isset($data['data'][$id])) {
-                    $item->{$id} = $data['data'][$id];
+                if (isset($data['data']->{$id})) {
+                    $data[$id] = $data['data']->{$id};
                 }
             }
         }
