@@ -55,7 +55,7 @@ class BaseModel extends Model implements BaseModelStateInterface, BaseModelInter
     {
         return [
             ['id' => self::STATE_PUBLISHED, 'name' => trans('core::interface.states.published')],
-            ['id' => self::STATE_NOT_PUBLISHED, 'name' => trans('core::interface.states.published')],
+            ['id' => self::STATE_NOT_PUBLISHED, 'name' => trans('core::interface.states.not_published')],
             ['id' => self::STATE_IN_TRASH, 'name' => trans('core::interface.states.in_trash')],
         ];
     }
